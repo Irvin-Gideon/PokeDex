@@ -12,7 +12,8 @@ import org.json.JSONObject
 
 
 /** AsyncTask is an Android API which executes a function on a background thread. In this instance
- * we will be using it to execute an API call to an external website. From there we download the
+ * we will be using it to create a class which gets the website information.
+ * This downloader will execute an API call to an external website. From there we download the
  * JSON data and manipulate in our main thread.
  */
 

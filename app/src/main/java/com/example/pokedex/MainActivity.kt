@@ -2,6 +2,7 @@ package com.example.pokedex
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ListView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -10,8 +11,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //test
+
+/*
         val test = DownloaderTask()
-        TextView.text = test.execute("https://pokeapi.co/api/v2/pokemon/ditto").get()
+        TextView.text = test.execute("https://pokeapi.co/api/v2/pokemon/ditto").get()*/
     }
 }
