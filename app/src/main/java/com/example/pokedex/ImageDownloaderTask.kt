@@ -27,6 +27,7 @@ class ImageDownloaderTask : AsyncTask<String, Void, Bitmap?>(){
             return myBitmap
         }catch(e: Exception){
             e.printStackTrace()
+
             return null
         }
 
