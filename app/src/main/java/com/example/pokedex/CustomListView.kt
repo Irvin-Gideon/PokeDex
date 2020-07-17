@@ -8,12 +8,20 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 
+/**
+ * CustomListView class allows us to use the ArrayAdapter to return a view for wach object
+ * in a collection of data objects that we provide which can be using in conjunction with interfaces
+ * such as ListView
+ */
 class CustomListView : ArrayAdapter<String>{
+    //List that reflects the elements in the similarly named objects in
+    //our MainActivity file
     private var name : List<String> = listOf()
     private var desc : List<String> = listOf()
     private var image : List<Int> = listOf()
     private var context: Activity
 
+    //CustomListVew constructor
     constructor(context: Activity, name: List<String>, desc: List<String>, image: List<Int>) : super(context,R.layout.activity_main,name){
         this.context = context
             this.name = name
@@ -21,14 +29,24 @@ class CustomListView : ArrayAdapter<String>{
             this.image = image
     }
 
-
+    /**
+     * Gives us a view that displays the data at a specified position in the data set
+     * through
+     * @param position : The position of the item within our adapter's data set of the item we want to view
+     * @param convertView View?: The old view to reuse
+     * @param parent ViewGroup: The parent that this view will be attached to
+     * @return View
+     */
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var r : View? = convertView
         val vwHolder: ViewHolder?
 
+        //Runs if view value is currently null
         if (r==null)
         {
             val layoutInflater : LayoutInflater = context.layoutInflater
+
+            //Allows us to specify the view and prevent attachment to the root
             r = layoutInflater.inflate(R.layout.list_layout, null,true)
             vwHolder = ViewHolder(r)
             r.tag = vwHolder
@@ -56,6 +74,7 @@ class CustomListView : ArrayAdapter<String>{
         return r as View
     }
 
+    //ViewHolder class allows us to assign view to specific ids
     class ViewHolder{
 
         var textVw1: TextView? = null
