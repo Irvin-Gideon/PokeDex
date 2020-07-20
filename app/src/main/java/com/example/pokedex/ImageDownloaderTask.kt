@@ -2,12 +2,9 @@ package com.example.pokedex
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.AsyncTask
-import android.widget.Toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.InputStream
-import java.io.InputStreamReader
 import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
@@ -17,15 +14,19 @@ import java.net.URL
  * Bitmap. From there we are able to use that image in in our main thread.
  */
 
+/**
+ * Pre: string must be a link to a website in plain text
+ * Post: Returns the image stored at the link given in a bitmap file format
+ **/
+
 suspend fun imageDownloaderTask(s: String): Bitmap? {
     return withContext(Dispatchers.IO) {
         try {
-            val url = URL(s)
+            val url = URL(s) // converts string input to a URL Object
             val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.connect()
+            urlConnection.connect() // connects to URL given
             val imageInput: InputStream = urlConnection.inputStream
-            val myBitmap: Bitmap = BitmapFactory.decodeStream(imageInput)
-            return@withContext myBitmap
+            return@withContext BitmapFactory.decodeStream(imageInput) //converts information from website into bitmap file
         } catch (e: Exception) {
             e.printStackTrace()
 

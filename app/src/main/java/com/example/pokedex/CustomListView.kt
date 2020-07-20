@@ -16,9 +16,9 @@ import android.widget.TextView
 class CustomListView : ArrayAdapter<String>{
     //List that reflects the elements in the similarly named objects in
     //our MainActivity file
-    private var name : List<String> = listOf()
-    private var desc : List<String> = listOf()
-    private var image : List<Int> = listOf()
+    private var name : List<String> = mutableListOf()
+    private var desc : List<String> = mutableListOf()
+    private var image : List<Int> = mutableListOf()
     private var context: Activity
 
     //CustomListVew constructor
@@ -58,18 +58,11 @@ class CustomListView : ArrayAdapter<String>{
 
         if (vwHolder != null) {
             vwHolder.imageVw?.setImageResource(image[position])
-        }
-
-        if (vwHolder != null) {
             vwHolder.textVw1?.text = name[position]
-        }
-
-        if (vwHolder != null) {
             vwHolder.textVw2?.text = desc[position]
+
+
         }
-
-
-
 
         return r as View
     }
@@ -82,7 +75,7 @@ class CustomListView : ArrayAdapter<String>{
         var imageVw: ImageView? = null
 
         constructor(view: View)  {
-            textVw1 = view.findViewById(R.id.tvPokemonType)
+            textVw1 = view.findViewById(R.id.tvPokemonName)
             textVw2 = view.findViewById(R.id.tvPokemonDesc)
             imageVw = view.findViewById(R.id.imageView)
         }

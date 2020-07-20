@@ -3,6 +3,7 @@ package com.example.pokedex
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -17,44 +18,51 @@ import org.json.JSONObject
  * JSON data and manipulate in our main thread.
  */
 
+/**
+ * Pre: 'string' must be a link to a website in plain text
+ * Post: Returns the HTML information from the url in the form of a string
+**/
  suspend fun downloaderTask (string: String) : String{
-    return withContext(Dispatchers.IO) {
+
         var file = ""
 
-        try {
+            try {
 
-            val url = URL(string)
-            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            val input: InputStream = urlConnection.inputStream
-            val inputRead = InputStreamReader(input)
+                val url = URL(string) //converts string input to a URL Object
+                val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+                val input: InputStream = urlConnection.inputStream
+                val inputRead = InputStreamReader(input)
 
-            var data: Int = inputRead.read()
-            while (data != -1) // Loop which writes (character by character) website data to a string
-            {
-                val ch: Char = data.toChar()
-                file += ch
-                data = inputRead.read()
+                var data: Int = inputRead.read()
+                var ch: Char
+                while (data != -1) // Loop which writes (character by character) website data to a string
+                {
+                    ch = data.toChar()
+                    file += ch
+                    data = inputRead.read()
+                }
+
+                return file
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return "Error"
             }
-            return@withContext file
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return@withContext "Error"
-        }
-    }
+
     }
 
-    /**
-     * Helper function used to parse through a JSON Object to find required information
+    /** Helper function used to parse through a JSON Object to find required information
+
+     * Pre: 's' must be a string containing JSON data
+     * Post: Returns a specified array or string of data from the JSON file
      */
-    fun getJSONInfo (s: String, info: String): String {
-        val title = ""
+    fun getJSONInfo (s: String, info: String): String? {
         try {
             val file = JSONObject(s)
 
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        return title
+        return null
     }
 
 
