@@ -29,7 +29,6 @@ suspend fun imageDownloaderTask(s: String): Bitmap? {
             return@withContext BitmapFactory.decodeStream(imageInput) //converts information from website into bitmap file
         } catch (e: Exception) {
             e.printStackTrace()
-
             return@withContext null
         }
 

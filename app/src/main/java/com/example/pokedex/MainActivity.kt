@@ -1,5 +1,6 @@
 package com.example.pokedex
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -16,11 +17,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         CoroutineScope(Dispatchers.Main).launch {
-            val inf = withContext(Dispatchers.IO){ downloaderTask ("https://pokeapi.co/api/v2/pokemon/1")}
-            Log.i("test",inf)
+            val inf: Bitmap? =  imageDownloaderTask ("https://images.theconversation.com/files/336212/original/file-20200519-152292-3nomu2.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=1200.0&fit=crop")
+            Log.i("test",inf.toString())
+
         }
+
 
 
     }

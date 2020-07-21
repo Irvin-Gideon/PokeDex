@@ -1,12 +1,7 @@
 package com.example.pokedex
-
-
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
 import java.net.URL
 
 import org.json.JSONObject
@@ -23,46 +18,49 @@ import org.json.JSONObject
  * Post: Returns the HTML information from the url in the form of a string
 **/
  suspend fun downloaderTask (string: String) : String{
-
-        var file = ""
-
+    return withContext(Dispatchers.IO) {
             try {
-
-                val url = URL(string) //converts string input to a URL Object
-                val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-                val input: InputStream = urlConnection.inputStream
-                val inputRead = InputStreamReader(input)
-
-                var data: Int = inputRead.read()
-                var ch: Char
-                while (data != -1) // Loop which writes (character by character) website data to a string
-                {
-                    ch = data.toChar()
-                    file += ch
-                    data = inputRead.read()
-                }
-
-                return file
+                  return@withContext URL(string).readText()
             } catch (e: Exception) {
                 e.printStackTrace()
-                return "Error"
+                return@withContext "Error"
             }
-
-    }
-
-    /** Helper function used to parse through a JSON Object to find required information
-
-     * Pre: 's' must be a string containing JSON data
-     * Post: Returns a specified array or string of data from the JSON file
-     */
-    fun getJSONInfo (s: String, info: String): String? {
-        try {
-            val file = JSONObject(s)
-
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
-        return null
     }
+
+/** Helper function used to parse through a string to find required information
+ * and convert it to a JSON Object
+ * Pre: 's' must be a string containing JSON data
+ * Post: Returns a specified JSON object of data from the  file
+ */
+fun getJSONObj (s: String, info: String): String? {
+    return try {
+        val file =JSONObject(s)
+        file.getString(info)
+
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+
+    }
+}
+
+/** Helper function used to parse through a string to find required information and convert it
+ * to a JSON Array
+
+ * Pre: 's' must be a string containing JSON data
+ * Post: Returns a specified JSON array of data from the file
+ */
+fun getJSONArr (s: String): String? {
+    return try{
+        val file = JSONArray(s)
+        return file.toString()
+
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+
+}
 
 

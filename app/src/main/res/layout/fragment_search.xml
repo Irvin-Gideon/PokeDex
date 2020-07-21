@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#57D6ACFF"
     tools:context=".searchFragment">
 
     <EditText
         android:id="@+id/editSearchBar"
         android:layout_width="317dp"
         android:layout_height="54dp"
+        android:autofillHints=""
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,6 +23,7 @@
     <ImageView
         android:layout_width="54dp"
         android:layout_height="53dp"
+        android:contentDescription="searchIcon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/editSearchBar"
         app:layout_constraintHorizontal_bias="0.4"
