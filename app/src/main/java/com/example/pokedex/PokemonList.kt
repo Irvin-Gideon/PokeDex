@@ -59,12 +59,13 @@ class PokemonList : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu,inflater)
-        inflater?.inflate(R.menu.searchmenu, menu)
+        inflater.inflate(R.menu.searchmenu, menu)
 
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean { // Navigates to search fragment on clicking menu item
-        return NavigationUI.onNavDestinationSelected(item!!,
+        return NavigationUI.onNavDestinationSelected(
+            item,
             requireView().findNavController())
                 || super.onOptionsItemSelected(item)
     }
