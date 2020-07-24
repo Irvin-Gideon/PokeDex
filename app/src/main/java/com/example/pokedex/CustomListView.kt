@@ -3,18 +3,11 @@ package com.example.pokedex
 import android.widget.ArrayAdapter
 import android.app.Activity
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import java.io.InputStream
-import java.lang.Exception
-import java.net.HttpURLConnection
-import java.net.URL
 
 /**
  * CustomListView class allows us to use the ArrayAdapter to return a view for wach object
@@ -24,13 +17,13 @@ import java.net.URL
 class CustomListView : ArrayAdapter<String>{
     //List that reflects the elements in the similarly named objects in
     //our MainActivity file
-    private var name : List<String> = mutableListOf()
-    private var desc : List<String> = mutableListOf()
-    private var image : List<Bitmap?> = mutableListOf()
+    private var name  = mutableListOf<String?>()
+    private var desc =   mutableListOf<String>()
+    private var image = mutableListOf<Bitmap?>()
     private var context: Activity
 
     //CustomListVew constructor
-    constructor(context: Activity, name: List<String>, desc: List<String>, image: List<Bitmap?>) : super(context,R.layout.activity_main,name){
+    constructor(context: Activity, name: MutableList<String?>, desc: MutableList<String>, image: MutableList<Bitmap?>) : super(context,R.layout.activity_main,name){
         this.context = context
             this.name = name
             this.desc = desc

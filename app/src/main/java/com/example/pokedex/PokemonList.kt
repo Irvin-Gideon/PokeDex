@@ -9,10 +9,6 @@ import android.widget.AdapterView
 import android.widget.ListView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import kotlinx.android.synthetic.main.list_layout.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 // TODO: Rename parameter arguments, choose names that match
@@ -30,9 +26,18 @@ class PokemonList : Fragment() {
     private var param2: String? = null
 
     private lateinit var listView: ListView
-    private val name = mutableListOf("Die 1", "Die 2", "Die 3", "Die 4", "Die 5", "Die 6")
+    //TODO remove testing
+    var testList= ListPopulation (6)
+
+    private var name = mutableListOf<String?>()
+
+    // private val name = mutableListOf("Die 1", "Die 2", "Die 3", "Die 4", "Die 5", "Die 6")
+
     private val desc = mutableListOf("1","2", "3", "4", "5", "6")
-    private var image = mutableListOf<Bitmap?>()
+    private val image = mutableListOf<Bitmap?>()
+
+    private fun setImage(image: Bitmap?){
+        this.image.add(image)}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,14 +46,6 @@ class PokemonList : Fragment() {
             param2 = it.getString(ARG_PARAM2)
 
         }
-
-
-
-    }
-
-    private fun setImage(image: Bitmap?){
-        this.image.add(image)
-
     }
 
     override fun onCreateView(
@@ -58,31 +55,23 @@ class PokemonList : Fragment() {
         // Inflates the layout for this fragment
         val view: View= inflater.inflate(R.layout.fragment_pokemon_list, container, false)
 
-        var inf: Bitmap? = null
-        runBlocking {
-            inf  =  imageDownloaderTask ("https://images.theconversation.com/files/336212/original/file-20200519-152292-3nomu2.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=1200.0&fit=crop")
 
-            Log.i("test",inf.toString())
 
-        }
-        setImage(inf)
-        setImage(inf)
-        setImage(inf)
-        setImage(inf)
-        setImage(inf)
-        setImage(inf)
+        //TODO remove testing
+        //sets image List to that of the ListPopulation instance's
+        image.addAll(testList.imgOfPokemon)
+        //sets name List to that of the ListPopulation instance's
+        name.addAll(testList.namesOfPokemon)
 
         listView = view.findViewById(R.id.listView)
         val customListView = activity?.let { CustomListView(it,name, desc, image) }
         listView.adapter = customListView
 
-        
         // Launches fragment to proper Pokemon information page
         listView.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 view.findNavController().navigate(R.id.action_pokemonList_to_pokemonInfoDisplay)
             }
-
 
         setHasOptionsMenu(true)
         return view
@@ -121,3 +110,10 @@ class PokemonList : Fragment() {
             }
     }
 }
+
+private fun <E> MutableList<E>.addAll(elements: MutableList<E?>) {
+    for(n in elements) if (n != null) add(n)
+
+}
+
+
