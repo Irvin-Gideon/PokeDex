@@ -90,29 +90,4 @@ class CustomListView : ArrayAdapter<String>{
 
     }
 
-    suspend fun repeatImageDownloaderTask(image: List<Int>): Any? {
-        return withContext(Dispatchers.IO) {
-
-            val x = 0
-            while (x in image.indices) {
-                try {
-                    val url =
-                        URL(image[x].toString()) // converts string input to a URL Object
-                    val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-                    urlConnection.connect() // connects to URL given
-                    val imageInput: InputStream = urlConnection.inputStream
-
-                    return@withContext BitmapFactory.decodeStream(imageInput) //converts information from website into bitmap file
-
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    return@withContext null
-                }
-
-
-            }
-        }
-
-    }
-
 }
