@@ -2,11 +2,19 @@ package com.example.pokedex
 
 import android.widget.ArrayAdapter
 import android.app.Activity
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.InputStream
+import java.lang.Exception
+import java.net.HttpURLConnection
+import java.net.URL
 
 /**
  * CustomListView class allows us to use the ArrayAdapter to return a view for wach object
@@ -18,11 +26,11 @@ class CustomListView : ArrayAdapter<String>{
     //our MainActivity file
     private var name : List<String> = mutableListOf()
     private var desc : List<String> = mutableListOf()
-    private var image : List<Int> = mutableListOf()
+    private var image : List<Bitmap?> = mutableListOf()
     private var context: Activity
 
     //CustomListVew constructor
-    constructor(context: Activity, name: List<String>, desc: List<String>, image: List<Int>) : super(context,R.layout.activity_main,name){
+    constructor(context: Activity, name: List<String>, desc: List<String>, image: List<Bitmap?>) : super(context,R.layout.activity_main,name){
         this.context = context
             this.name = name
             this.desc = desc
@@ -38,33 +46,33 @@ class CustomListView : ArrayAdapter<String>{
      * @return View
      */
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var r : View? = convertView
+        var row  : View? = convertView
         val vwHolder: ViewHolder?
 
         //Runs if view value is currently null
-        if (r==null)
+        if (row == null)
         {
             val layoutInflater : LayoutInflater = context.layoutInflater
 
             //Allows us to specify the view and prevent attachment to the root
-            r = layoutInflater.inflate(R.layout.list_layout, null,true)
-            vwHolder = ViewHolder(r)
-            r.tag = vwHolder
+            row  = layoutInflater.inflate(R.layout.list_layout, null,true)
+            vwHolder = ViewHolder(row )
+            row .tag = vwHolder
         }
         else{
-            vwHolder = r.tag as ViewHolder?
+            vwHolder = row .tag as ViewHolder?
 
         }
 
         if (vwHolder != null) {
-            vwHolder.imageVw?.setImageResource(image[position])
+            vwHolder.imageVw?.setImageBitmap(image[position])
             vwHolder.textVw1?.text = name[position]
             vwHolder.textVw2?.text = desc[position]
 
 
         }
 
-        return r as View
+        return row  as View
     }
 
     //ViewHolder class allows us to assign view to specific ids
@@ -79,6 +87,32 @@ class CustomListView : ArrayAdapter<String>{
             textVw2 = view.findViewById(R.id.tvPokemonDesc)
             imageVw = view.findViewById(R.id.imageView)
         }
+
+    }
+
+    suspend fun repeatImageDownloaderTask(image: List<Int>): Any? {
+        return withContext(Dispatchers.IO) {
+
+            val x = 0
+            while (x in image.indices) {
+                try {
+                    val url =
+                        URL(image[x].toString()) // converts string input to a URL Object
+                    val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+                    urlConnection.connect() // connects to URL given
+                    val imageInput: InputStream = urlConnection.inputStream
+
+                    return@withContext BitmapFactory.decodeStream(imageInput) //converts information from website into bitmap file
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    return@withContext null
+                }
+
+
+            }
+        }
+
     }
 
 }
