@@ -7,6 +7,8 @@ import android.widget.AdapterView
 import android.widget.ListView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import java.lang.Error
+import java.sql.Struct
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,7 +25,13 @@ class PokemonList : Fragment() {
     private var param2: String? = null
 
     private lateinit var listView: ListView
-    private val name = mutableListOf("Die 1", "Die 2", "Die 3", "Die 4", "Die 5", "Die 6")
+    //TODO remove testing
+    var testList= ListPopulation (6)
+
+    private var name = mutableListOf<String>()
+
+    // private val name = mutableListOf("Die 1", "Die 2", "Die 3", "Die 4", "Die 5", "Die 6")
+
     private val desc = mutableListOf("1","2", "3", "4", "5", "6")
     private val image = mutableListOf(R.drawable.dice_1,R.drawable.dice_2,R.drawable.dice_3,R.drawable.dice_4,R.drawable.dice_5,R.drawable.dice_6,R.drawable.empty_dice)
 
@@ -33,6 +41,7 @@ class PokemonList : Fragment() {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+
         }
     }
 
@@ -42,6 +51,10 @@ class PokemonList : Fragment() {
     ): View? {
         // Inflates the layout for this fragment
         val view: View= inflater.inflate(R.layout.fragment_pokemon_list, container, false)
+
+        //TODO remove testing
+        //sets name List to that of the ListPopulation instance's
+        name.addAll(testList.namesOfPokemon)
 
         listView = view.findViewById(R.id.listView)
         val customListView = activity?.let { CustomListView(it,name, desc, image) }
@@ -89,4 +102,9 @@ class PokemonList : Fragment() {
                 }
             }
     }
+}
+
+private fun <E> MutableList<E>.addAll(elements: MutableList<E?>) {
+    for(n in elements) if (n != null) add(n)
+
 }
