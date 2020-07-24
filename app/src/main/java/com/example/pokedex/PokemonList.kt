@@ -1,15 +1,15 @@
 package com.example.pokedex
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.AdapterView
 import android.widget.ListView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import kotlinx.coroutines.runBlocking
+import com.example.pokedex.Activity.DetailActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,8 +36,6 @@ class PokemonList : Fragment() {
     private val desc = mutableListOf("1","2", "3", "4", "5", "6")
     private val image = mutableListOf<Bitmap?>()
 
-    private fun setImage(image: Bitmap?){
-        this.image.add(image)}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +68,10 @@ class PokemonList : Fragment() {
         // Launches fragment to proper Pokemon information page
         listView.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
-                view.findNavController().navigate(R.id.action_pokemonList_to_pokemonInfoDisplay)
+               // view.findNavController().navigate(R.id.action_pokemonList_to_pokemonInfoDisplay);
+                val mIntent: Intent? = Intent(this.context, DetailActivity::class.java)
+                mIntent?.putExtra("pokemonSprite", image[position])
+                startActivity(mIntent)
             }
 
         setHasOptionsMenu(true)

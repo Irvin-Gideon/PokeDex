@@ -58,6 +58,7 @@ class CustomListView : ArrayAdapter<String>{
         }
 
         if (vwHolder != null) {
+
             vwHolder.imageVw?.setImageBitmap(image[position])
             vwHolder.textVw1?.text = name[position]
             vwHolder.textVw2?.text = desc[position]
@@ -79,6 +80,7 @@ class CustomListView : ArrayAdapter<String>{
             textVw1 = view.findViewById(R.id.tvPokemonName)
             textVw2 = view.findViewById(R.id.tvPokemonDesc)
             imageVw = view.findViewById(R.id.imageView)
+            //imageVw = view.findViewById(R.id.pokemonInfoImage)
         }
 
     }
