@@ -1,18 +1,12 @@
 package com.example.pokedex
 
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.AdapterView
 import android.widget.ListView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import kotlinx.android.synthetic.main.list_layout.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,36 +25,15 @@ class PokemonList : Fragment() {
     private lateinit var listView: ListView
     private val name = mutableListOf("Die 1", "Die 2", "Die 3", "Die 4", "Die 5", "Die 6")
     private val desc = mutableListOf("1","2", "3", "4", "5", "6")
-    private var image = mutableListOf<Bitmap?>()
+    private val image = mutableListOf(R.drawable.dice_1,R.drawable.dice_2,R.drawable.dice_3,R.drawable.dice_4,R.drawable.dice_5,R.drawable.dice_6,R.drawable.empty_dice)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
-
         }
-
-        CoroutineScope(Dispatchers.Main).launch {
-            val inf: Bitmap? =  imageDownloaderTask ("https://images.theconversation.com/files/336212/original/file-20200519-152292-3nomu2.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=1200.0&fit=crop")
-
-            Log.i("test",inf.toString())
-
-            setImage(inf)
-            setImage(inf)
-            setImage(inf)
-            setImage(inf)
-            setImage(inf)
-            setImage(inf)
-
-        }
-
-
-    }
-
-    private fun setImage(image: Bitmap?){
-        this.image.addAll(listOf(image))
-
     }
 
     override fun onCreateView(
@@ -70,20 +43,15 @@ class PokemonList : Fragment() {
         // Inflates the layout for this fragment
         val view: View= inflater.inflate(R.layout.fragment_pokemon_list, container, false)
 
-
-        name.add("Greg")
-        desc.add("3")
         listView = view.findViewById(R.id.listView)
         val customListView = activity?.let { CustomListView(it,name, desc, image) }
         listView.adapter = customListView
 
-        
         // Launches fragment to proper Pokemon information page
         listView.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
                 view.findNavController().navigate(R.id.action_pokemonList_to_pokemonInfoDisplay)
             }
-
 
         setHasOptionsMenu(true)
         return view
