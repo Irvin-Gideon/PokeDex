@@ -17,7 +17,8 @@ class DetailActivity : AppCompatActivity() {
 
         mImageView = findViewById(R.id.pokemonInfoImage)
 
-        val mBundle = intent.extras
+        val mBundle = intent.extras //Get the attached bundle from the intent
+
         if (mBundle != null) {
             mImageView.setImageBitmap(mBundle["pokemonSprite"] as Bitmap?)
         }

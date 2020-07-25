@@ -69,8 +69,11 @@ class PokemonList : Fragment() {
         listView.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
                // view.findNavController().navigate(R.id.action_pokemonList_to_pokemonInfoDisplay);
+
+                //Creates an Intent object by giving the context and the class of next activity to be opened
+                // A passive data structure holding an abstract description of an action to be performed.
                 val mIntent: Intent? = Intent(this.context, DetailActivity::class.java)
-                mIntent?.putExtra("pokemonSprite", image[position])
+                mIntent?.putExtra("pokemonSprite", image[position]) //Attach the key value pair using putExtra to this intent
                 startActivity(mIntent)
             }
 
