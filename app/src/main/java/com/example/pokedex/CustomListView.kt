@@ -17,13 +17,14 @@ import android.widget.TextView
 class CustomListView : ArrayAdapter<String>{
     //List that reflects the elements in the similarly named objects in
     //our MainActivity file
+    //TODO: add support for multiple pokemon types
     private var name  = mutableListOf<String?>()
-    private var desc =   mutableListOf<String>()
+    private var desc =   mutableListOf<String?>()
     private var image = mutableListOf<Bitmap?>()
     private var context: Activity
 
     //CustomListVew constructor
-    constructor(context: Activity, name: MutableList<String?>, desc: MutableList<String>, image: MutableList<Bitmap?>) : super(context,R.layout.activity_main,name){
+    constructor(context: Activity, name: MutableList<String?>, desc: MutableList<String?>, image: MutableList<Bitmap?>) : super(context,R.layout.activity_main,name){
         this.context = context
             this.name = name
             this.desc = desc
@@ -58,7 +59,6 @@ class CustomListView : ArrayAdapter<String>{
         }
 
         if (vwHolder != null) {
-
             vwHolder.imageVw?.setImageBitmap(image[position])
             vwHolder.textVw1?.text = name[position]
             vwHolder.textVw2?.text = desc[position]
@@ -70,19 +70,17 @@ class CustomListView : ArrayAdapter<String>{
     }
 
     //ViewHolder class allows us to assign view to specific ids
-    class ViewHolder{
+    class ViewHolder(view: View) {
 
         var textVw1: TextView? = null
         var textVw2: TextView? = null
         var imageVw: ImageView? = null
 
-        constructor(view: View)  {
+        init {
             textVw1 = view.findViewById(R.id.tvPokemonName)
             textVw2 = view.findViewById(R.id.tvPokemonDesc)
             imageVw = view.findViewById(R.id.imageView)
-            //imageVw = view.findViewById(R.id.pokemonInfoImage)
         }
-
     }
 
 }

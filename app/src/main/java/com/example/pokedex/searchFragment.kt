@@ -5,6 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,6 +29,8 @@ class searchFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    lateinit var searchButton : ImageButton
+    lateinit var editSearchBar : EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +45,40 @@ class searchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false)
+        val view: View= inflater.inflate(R.layout.fragment_search, container, false)
+        searchButton = view.findViewById(R.id.searchButton)
+        editSearchBar = view.findViewById(R.id.editSearchBar)
+
+        //Sends information to display fragment in order to show pokemon information
+        searchButton.setOnClickListener(){
+            CoroutineScope(Dispatchers.Main).launch {
+                if (editSearchBar.text.toString().isBlank()) {
+                    // If user input is Blank, it will prompt the user to input a value
+                    editSearchBar.text.clear()
+                    editSearchBar.hint = "Input valid Pokémon Name."
+                } else {
+                    var entry = editSearchBar.text.toString().toLowerCase()
+
+                    if ("$entry " !in allPokemon) { //Asserts that user input is a valid pokemon choice found in the list of allPokemon
+                        Toast.makeText(context, "Invalid Value ", Toast.LENGTH_SHORT).show()
+                    } else {
+
+                        if (entry == "farfetch'd") { //  for the abnormal cases
+                            entry = "farfetchd"
+                        }
+                        if (entry == "mr. mime" || entry == "mr mime") {// for the abnormal cases
+                            entry = "mr-mime"
+                        }
+                        //Sends whatever user typed into the editText in a bundle pair to the next fragment
+                        val bundle: Bundle = bundleOf("pokemonName" to entry)
+                        view.findNavController().navigate(R.id.action_searchFragment_to_pokemonInfoDisplay, bundle)
+                    }
+                }
+            }
+
+        }
+
+        return view
     }
 
     companion object {

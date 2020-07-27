@@ -21,10 +21,19 @@
         android:id="@+id/pokemonInfoDisplay"
         android:name="com.example.pokedex.PokemonInfoDisplay"
         android:label="fragment_pokemon_info_display"
-        tools:layout="@layout/fragment_pokemon_info_display" />
+        tools:layout="@layout/fragment_pokemon_info_display" >
+        <argument
+            android:name="name"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.pokedex.searchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_pokemonInfoDisplay"
+            app:destination="@id/pokemonInfoDisplay"
+            app:enterAnim="@android:anim/fade_in" />
+    </fragment>
 </navigation>

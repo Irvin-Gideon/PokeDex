@@ -23,10 +23,7 @@ suspend fun imageDownloaderTask(s: String): Bitmap? {
     return withContext(Dispatchers.IO) {
         try {
             val url = URL(s) // converts string input to a URL Object
-            val urlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
-            urlConnection.connect() // connects to URL given
-            val imageInput: InputStream = urlConnection.inputStream
-            return@withContext BitmapFactory.decodeStream(imageInput) //converts information from website into bitmap file
+            return@withContext BitmapFactory.decodeStream(url.openConnection().inputStream) //converts information from website into bitmap file
         } catch (e: Exception) {
             e.printStackTrace()
             return@withContext null

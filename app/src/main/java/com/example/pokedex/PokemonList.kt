@@ -27,13 +27,10 @@ class PokemonList : Fragment() {
 
     private lateinit var listView: ListView
     //TODO remove testing
-    var testList= ListPopulation (6)
+    var testList= ListPopulation (10)
 
     private var name = mutableListOf<String?>()
-
-    // private val name = mutableListOf("Die 1", "Die 2", "Die 3", "Die 4", "Die 5", "Die 6")
-
-    private val desc = mutableListOf("1","2", "3", "4", "5", "6")
+    private val desc = mutableListOf<String?>()
     private val image = mutableListOf<Bitmap?>()
 
 
@@ -53,9 +50,8 @@ class PokemonList : Fragment() {
         // Inflates the layout for this fragment
         val view: View= inflater.inflate(R.layout.fragment_pokemon_list, container, false)
 
-
-
         //TODO remove testing
+        desc.addAll(testList.typesOfPokemon)
         //sets image List to that of the ListPopulation instance's
         image.addAll(testList.imgOfPokemon)
         //sets name List to that of the ListPopulation instance's
@@ -119,5 +115,3 @@ private fun <E> MutableList<E>.addAll(elements: MutableList<E?>) {
     for(n in elements) if (n != null) add(n)
 
 }
-
-
