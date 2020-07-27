@@ -8,7 +8,9 @@ import kotlinx.coroutines.*
  **/
 class ListPopulation(numOfItems: Int){
     var namesOfPokemon = mutableListOf<String?>()
-    var typesOfPokemon = mutableListOf<String?>()
+    var types1OfPokemon = mutableListOf<String?>()
+    var types2OfPokemon = mutableListOf<String?>()
+
     var imgOfPokemon = mutableListOf<Bitmap?>()
     private val countOfItems: Int = numOfItems // #NOTE: there are 807 pokemon in api
 
@@ -17,12 +19,15 @@ class ListPopulation(numOfItems: Int){
             for (n in 1..numOfItems) {  //Initializes the Lists with the information of each pokemon
                 //TODO: improve execution time
                 val v1 = async { getPokemonName(n) }
-                val v2 = async { getPokemonType(n) }
-                val v3 = async { getPokemonSprite(n) }
+                val v2 = async { getPokemonType1(n) }
+                val v3 = async {getPokemonType2(n)}
+                val v4 = async { getPokemonSprite(n) }
 
                 namesOfPokemon.add(v1.await())
-                typesOfPokemon.add(v2.await())
-                imgOfPokemon.add(v3.await())
+                types1OfPokemon.add(v2.await())
+                types2OfPokemon.add(v3.await())
+                imgOfPokemon.add(v4.await())
+
             }
         }
 
@@ -45,13 +50,28 @@ class ListPopulation(numOfItems: Int){
      * the data from. ID's range from 1-807.
      * Post:  Parses through the JSON file to find the type in the JSON data
      */
-    private fun getPokemonType(pokemonID: Int): String? {
+    private fun getPokemonType1(pokemonID: Int): String? {
         var s=""
         runBlocking{//Launches the task with runBlocking so it executes sequentially
             s=downloaderTask("https://pokeapi.co/api/v2/pokemon/$pokemonID")
         }
         val typesArr = parseJSONObj(s,"types")
         val types= parseJSONArr(typesArr,0)
+        val firstType= parseJSONObj(types,"type")
+        return cap(parseJSONObj(firstType,"name")) //Retrieves first type and name of that type
+    }
+
+    /**Pre: pokemonID must be an integer that specifies which pokemon the function call has to retrieve
+     * the data from. ID's range from 1-807.
+     * Post:  Parses through the JSON file to find the type in the JSON data
+     */
+    private fun getPokemonType2(pokemonID: Int): String? {
+        var s=""
+        runBlocking{//Launches the task with runBlocking so it executes sequentially
+            s=downloaderTask("https://pokeapi.co/api/v2/pokemon/$pokemonID")
+        }
+        val typesArr = parseJSONObj(s,"types")
+        val types= parseJSONArr(typesArr,1) ?: return null //if there is no second type
         val firstType= parseJSONObj(types,"type")
         return cap(parseJSONObj(firstType,"name")) //Retrieves first type and name of that type
     }
