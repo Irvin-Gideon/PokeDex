@@ -3,6 +3,7 @@ package com.example.pokedex
 import android.widget.ArrayAdapter
 import android.app.Activity
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,15 +20,17 @@ class CustomListView : ArrayAdapter<String>{
     //our MainActivity file
     //TODO: add support for multiple pokemon types
     private var name  = mutableListOf<String?>()
-    private var desc =   mutableListOf<String?>()
+    private var type1 =   mutableListOf<String?>()
+    private var type2 =   mutableListOf<String?>()
     private var image = mutableListOf<Bitmap?>()
     private var context: Activity
 
     //CustomListVew constructor
-    constructor(context: Activity, name: MutableList<String?>, desc: MutableList<String?>, image: MutableList<Bitmap?>) : super(context,R.layout.activity_main,name){
+    constructor(context: Activity, name: MutableList<String?>, type1: MutableList<String?>,type2: MutableList<String?>, image: MutableList<Bitmap?>) : super(context,R.layout.activity_main,name){
         this.context = context
             this.name = name
-            this.desc = desc
+            this.type1 = type1
+            this.type2 = type2
             this.image = image
     }
 
@@ -61,10 +64,14 @@ class CustomListView : ArrayAdapter<String>{
         if (vwHolder != null) {
             vwHolder.imageVw?.setImageBitmap(image[position])
             vwHolder.textVw1?.text = name[position]
-            vwHolder.textVw2?.text = desc[position]
+            vwHolder.textVw2?.text = type1[position]
+            vwHolder.textVw3?.text = type2[position]
 
-
+            if(type2[position]==null){
+                vwHolder.textVw3?.setBackgroundColor(Color.WHITE)
+            }
         }
+
 
         return row  as View
     }
@@ -74,11 +81,13 @@ class CustomListView : ArrayAdapter<String>{
 
         var textVw1: TextView? = null
         var textVw2: TextView? = null
+        var textVw3: TextView? = null
         var imageVw: ImageView? = null
 
         init {
             textVw1 = view.findViewById(R.id.tvPokemonName)
-            textVw2 = view.findViewById(R.id.tvPokemonDesc)
+            textVw2 = view.findViewById(R.id.tvPokemonType1)
+            textVw3 = view.findViewById(R.id.tvPokemonType2)
             imageVw = view.findViewById(R.id.imageView)
         }
     }

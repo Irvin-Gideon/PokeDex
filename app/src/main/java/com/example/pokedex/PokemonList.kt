@@ -30,7 +30,8 @@ class PokemonList : Fragment() {
     var testList= ListPopulation (10)
 
     private var name = mutableListOf<String?>()
-    private val desc = mutableListOf<String?>()
+    private val type1 = mutableListOf<String?>()
+    private val type2 = mutableListOf<String?>()
     private val image = mutableListOf<Bitmap?>()
 
 
@@ -51,14 +52,16 @@ class PokemonList : Fragment() {
         val view: View= inflater.inflate(R.layout.fragment_pokemon_list, container, false)
 
         //TODO remove testing
-        desc.addAll(testList.typesOfPokemon)
+        type1.addAll(testList.types1OfPokemon)
+        type2.addAll(testList.types2OfPokemon)
+
         //sets image List to that of the ListPopulation instance's
         image.addAll(testList.imgOfPokemon)
         //sets name List to that of the ListPopulation instance's
         name.addAll(testList.namesOfPokemon)
 
         listView = view.findViewById(R.id.listView)
-        val customListView = activity?.let { CustomListView(it,name, desc, image) }
+        val customListView = activity?.let { CustomListView(it,name, type1,type2, image) }
         listView.adapter = customListView
 
         // Launches fragment to proper Pokemon information page
