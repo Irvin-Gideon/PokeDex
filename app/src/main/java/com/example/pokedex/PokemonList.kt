@@ -70,6 +70,7 @@ class PokemonList : Fragment() {
                 // A passive data structure holding an abstract description of an action to be performed.
                 val mIntent: Intent? = Intent(this.context, DetailActivity::class.java)
                 mIntent?.putExtra("pokemonSprite", image[position]) //Attach the key value pair using putExtra to this intent
+                mIntent?.putExtra("pokemonType", desc[position])
                 startActivity(mIntent)
             }
 
