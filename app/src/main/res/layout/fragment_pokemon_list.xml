@@ -7,7 +7,7 @@
     android:background="#FFFFFF"
     tools:context=".PokemonList">
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listView"
         android:layout_width="413dp"
         android:layout_height="642dp"
@@ -18,5 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+
 
 </FrameLayout>
