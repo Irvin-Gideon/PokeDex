@@ -24,14 +24,12 @@ class ListPopulation(numOfItems: Int){
                 val v4 = async { getPokemonSprite(n) }
 
                 namesOfPokemon.add(v1.await())
-<<<<<<< Updated upstream
                 types1OfPokemon.add(v2.await())
                 types2OfPokemon.add(v3.await())
                 imgOfPokemon.add(v4.await())
-=======
-                typesOfPokemon.add(v2.await())
-                imgOfPokemon.add(v3.await())
->>>>>>> Stashed changes
+
+
+
 
             }
         }
@@ -70,21 +68,18 @@ class ListPopulation(numOfItems: Int){
      * the data from. ID's range from 1-807.
      * Post:  Parses through the JSON file to find the type in the JSON data
      */
-<<<<<<< Updated upstream
+
     private fun getPokemonType2(pokemonID: Int): String? {
-=======
-    private fun getPokemonTypes(pokemonID: Int): String? {
->>>>>>> Stashed changes
+
         var s=""
         runBlocking{//Launches the task with runBlocking so it executes sequentially
             s=downloaderTask("https://pokeapi.co/api/v2/pokemon/$pokemonID")
         }
         val typesArr = parseJSONObj(s,"types")
-<<<<<<< Updated upstream
+
         val types= parseJSONArr(typesArr,1) ?: return null //if there is no second type
-=======
-        val types= parseJSONArr(typesArr,1)
->>>>>>> Stashed changes
+
+
         val firstType= parseJSONObj(types,"type")
         return cap(parseJSONObj(firstType,"name")) //Retrieves first type and name of that type
     }

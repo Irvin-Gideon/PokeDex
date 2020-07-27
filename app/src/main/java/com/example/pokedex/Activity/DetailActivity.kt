@@ -10,6 +10,7 @@ import com.example.pokedex.R
 class DetailActivity : AppCompatActivity() {
     private lateinit var mImageView: ImageView
     private lateinit var mTextView: TextView
+    private lateinit var mTextView2: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,11 +20,13 @@ class DetailActivity : AppCompatActivity() {
 
         mImageView = findViewById(R.id.pokemonInfoImage)
         mTextView = findViewById(R.id.pokemonInfoType)
+        mTextView2 = findViewById(R.id.pokemonInfoTypeMulti)
         val mBundle = intent.extras //Get the attached bundle from the intent
 
         if (mBundle != null) {
             mImageView.setImageBitmap(mBundle["pokemonSprite"] as Bitmap?)
             mTextView.text = mBundle["pokemonType"] as String
+            mTextView2.text = mBundle["pokemonType2"] as String
         }
 
     }
