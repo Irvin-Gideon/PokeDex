@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.AdapterView
-import android.widget.ListView
+import android.widget.LinearLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedex.Activity.DetailActivity
 
 // TODO: Rename parameter arguments, choose names that match
@@ -25,7 +27,8 @@ class PokemonList : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private lateinit var listView: ListView
+    private lateinit var recyclerVw: RecyclerView
+
     //TODO remove testing
     var testList= ListPopulation (10)
 
@@ -60,24 +63,28 @@ class PokemonList : Fragment() {
         //sets name List to that of the ListPopulation instance's
         name.addAll(testList.namesOfPokemon)
 
-        listView = view.findViewById(R.id.listView)
+        recyclerVw = view.findViewById(R.id.recyclerView)
         val customListView = activity?.let { CustomListView(it,name, type1,type2, image) }
-        listView.adapter = customListView
 
+        customListView?.notifyDataSetChanged()
+
+        recyclerVw.layoutManager = LinearLayoutManager(context)
+        recyclerVw.adapter = customListView
+        recyclerVw.setHasFixedSize(true)
         // Launches fragment to proper Pokemon information page
-        listView.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-               // view.findNavController().navigate(R.id.action_pokemonList_to_pokemonInfoDisplay);
-
-                //Creates an Intent object by giving the context and the class of next activity to be opened
-                // A passive data structure holding an abstract description of an action to be performed.
-                val mIntent: Intent? = Intent(this.context, DetailActivity::class.java)
-                mIntent?.putExtra("pokemonSprite", image[position]) //Attach the key value pair using putExtra to this intent
-                mIntent?.putExtra("pokemonType", type1[position])
-                mIntent?.putExtra("pokemonType2", type2[position])
-                startActivity(mIntent)
-            }
-
+//        recyclerVw.onItemClickListener (
+//            AdapterView.OnItemClickListener { parent, view, position, id ->
+//               // view.findNavController().navigate(R.id.action_pokemonList_to_pokemonInfoDisplay);
+//
+//                //Creates an Intent object by giving the context and the class of next activity to be opened
+//                // A passive data structure holding an abstract description of an action to be performed.
+//                val mIntent: Intent? = Intent(this.context, DetailActivity::class.java)
+//                mIntent?.putExtra("pokemonSprite", image[position]) //Attach the key value pair using putExtra to this intent
+//                mIntent?.putExtra("pokemonType", type1[position])
+//                mIntent?.putExtra("pokemonType2", type2[position])
+//                startActivity(mIntent)
+//            }
+//        )
         setHasOptionsMenu(true)
         return view
     }

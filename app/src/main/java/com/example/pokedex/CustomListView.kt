@@ -9,30 +9,67 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * CustomListView class allows us to use the ArrayAdapter to return a view for wach object
  * in a collection of data objects that we provide which can be using in conjunction with interfaces
  * such as ListView
  */
-class CustomListView : ArrayAdapter<String>{
-    //List that reflects the elements in the similarly named objects in
+class CustomListView//CustomListVew constructor
+    (
+    private var context: Activity,//List that reflects the elements in the similarly named objects in
     //our MainActivity file
     //TODO: add support for multiple pokemon types
-    private var name  = mutableListOf<String?>()
-    private var type1 =   mutableListOf<String?>()
-    private var type2 =   mutableListOf<String?>()
-    private var image = mutableListOf<Bitmap?>()
-    private var context: Activity
+    private var name: MutableList<String?>,
+    private var type1: MutableList<String?>,
+    private var type2: MutableList<String?>,
+    private var image: MutableList<Bitmap?>
+) : RecyclerView.Adapter<CustomListView.ViewHolder>() {
 
-    //CustomListVew constructor
-    constructor(context: Activity, name: MutableList<String?>, type1: MutableList<String?>,type2: MutableList<String?>, image: MutableList<Bitmap?>) : super(context,R.layout.activity_main,name){
-        this.context = context
-            this.name = name
-            this.type1 = type1
-            this.type2 = type2
-            this.image = image
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder(
+            LayoutInflater
+                .from(context)
+                .inflate(R.layout.fragment_pokemon_list, parent, false)
+        );
     }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.imageVw?.setImageBitmap(image[position] as Bitmap)
+        holder.textVw1?.text = name[position]
+        holder.textVw2?.text = type1[position]
+        holder.textVw3?.text = type2[position]
+
+        if(type2[position]==null){
+            holder.textVw3?.setBackgroundColor(Color.WHITE)
+        }
+
+    }
+
+
+    override fun getItemCount(): Int {
+        return this.name.size
+    }
+
+    //ViewHolder class allows us to assign view to specific ids
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        var textVw1: TextView? = null
+        var textVw2: TextView? = null
+        var textVw3: TextView? = null
+        var imageVw: ImageView? = null
+
+        init {
+
+            textVw1 = view.findViewById(R.id.tvPokemonName)
+            textVw2 = view.findViewById(R.id.tvPokemonType1)
+            textVw3 = view.findViewById(R.id.tvPokemonType2)
+            imageVw = view.findViewById(R.id.imageView)
+        }
+    }
+
 
     /**
      * Gives us a view that displays the data at a specified position in the data set
@@ -42,7 +79,7 @@ class CustomListView : ArrayAdapter<String>{
      * @param parent ViewGroup: The parent that this view will be attached to
      * @return View
      */
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+    fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var row  : View? = convertView
         val vwHolder: ViewHolder?
 
@@ -76,20 +113,11 @@ class CustomListView : ArrayAdapter<String>{
         return row  as View
     }
 
-    //ViewHolder class allows us to assign view to specific ids
-    class ViewHolder(view: View) {
 
-        var textVw1: TextView? = null
-        var textVw2: TextView? = null
-        var textVw3: TextView? = null
-        var imageVw: ImageView? = null
 
-        init {
-            textVw1 = view.findViewById(R.id.tvPokemonName)
-            textVw2 = view.findViewById(R.id.tvPokemonType1)
-            textVw3 = view.findViewById(R.id.tvPokemonType2)
-            imageVw = view.findViewById(R.id.imageView)
-        }
-    }
+
+
+
+
 
 }
