@@ -31,9 +31,9 @@ class PokemonList : Fragment() {
 
     //TODO remove testing
 
-    private val pokeTestList = ArrayList<PokemonItem>(7)
+    private val pokeTestList = ArrayList<PokemonItem>(10)
     private fun popList(){
-        for (n in 1..7)
+        for (n in 1..10)
         {  //Initializes the Lists with the information of each pokemon
             pokeTestList.add(PokemonItem(n))
         }

@@ -1,8 +1,7 @@
 package com.example.pokedex
 
 import android.graphics.Bitmap
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 
 class PokemonItem(pokemonID: Int) {
@@ -13,10 +12,12 @@ class PokemonItem(pokemonID: Int) {
 
 
     init{
-        pokemonName= getPokemonName(pokemonID)
-        pokemonSprite=getPokemonSprite(pokemonID)
-        pokemonType1=getPokemonType1(pokemonID)
-        pokemonType2=getPokemonType2(pokemonID)
+        CoroutineScope(Dispatchers.Main).launch {
+            pokemonName = getPokemonName(pokemonID)
+            pokemonSprite = getPokemonSprite(pokemonID)
+            pokemonType1 = getPokemonType1(pokemonID)
+            pokemonType2 = getPokemonType2(pokemonID)
+        }
 //        runBlocking {
 //            val v1 = async{getPokemonName(pokemonID)}
 //            val v2 = async{getPokemonType1(pokemonID)}
@@ -35,11 +36,11 @@ class PokemonItem(pokemonID: Int) {
      * the data from. ID's range from 1-807.
      * Post: Parses through the JSON file to find the name in the JSON data
      */
-    private fun getPokemonName(pokemonID: Int): String? {
+    private suspend fun getPokemonName(pokemonID: Int): String? {
         var s=""
-        runBlocking{//Launches the task with runBlocking so it executes sequentially
-            s=downloaderTask("https://pokeapi.co/api/v2/pokemon/$pokemonID")
-        }
+        //Launches the task with runBlocking so it executes sequentially
+        s=downloaderTask("https://pokeapi.co/api/v2/pokemon/$pokemonID")
+
         val species = parseJSONObj(s,"species")
         return cap(parseJSONObj(species,"name"))
     }
@@ -48,11 +49,11 @@ class PokemonItem(pokemonID: Int) {
      * the data from. ID's range from 1-807.
      * Post:  Parses through the JSON file to find the type in the JSON data
      */
-    private fun getPokemonType1(pokemonID: Int): String? {
+    private suspend fun getPokemonType1(pokemonID: Int): String? {
         var s=""
-        runBlocking{//Launches the task with runBlocking so it executes sequentially
-            s=downloaderTask("https://pokeapi.co/api/v2/pokemon/$pokemonID")
-        }
+        //Launches the task with runBlocking so it executes sequentially
+        s=downloaderTask("https://pokeapi.co/api/v2/pokemon/$pokemonID")
+
         val typesArr = parseJSONObj(s,"types")
         val types= parseJSONArr(typesArr,0)
         val firstType= parseJSONObj(types,"type")
@@ -64,12 +65,12 @@ class PokemonItem(pokemonID: Int) {
      * Post:  Parses through the JSON file to find the type in the JSON data
      */
 
-    private fun getPokemonType2(pokemonID: Int): String? {
+    private suspend fun getPokemonType2(pokemonID: Int): String? {
 
         var s=""
-        runBlocking{//Launches the task with runBlocking so it executes sequentially
+        //Launches the task with runBlocking so it executes sequentially
             s=downloaderTask("https://pokeapi.co/api/v2/pokemon/$pokemonID")
-        }
+
         val typesArr = parseJSONObj(s,"types")
 
         val types= parseJSONArr(typesArr,1) ?: return null //if there is no second type
@@ -83,17 +84,17 @@ class PokemonItem(pokemonID: Int) {
      * the data from. ID's range from 1-807.
      * Post:  Parses through the JSON file to find the type in the JSON data
      */
-    private fun getPokemonSprite(pokemonID: Int): Bitmap? {
+    private suspend fun getPokemonSprite(pokemonID: Int): Bitmap? {
         var s=""
-        runBlocking{//Launches the task with runBlocking so it executes sequentially
-            s=downloaderTask("https://pokeapi.co/api/v2/pokemon/$pokemonID")
+        //Launches the task with runBlocking so it executes sequentially
+        s=downloaderTask("https://pokeapi.co/api/v2/pokemon/$pokemonID")
 
-        }
+
         val typesArr = parseJSONObj(s,"sprites")
         val spriteURL = parseJSONObj(typesArr, "front_default")
 
         var spriteImage: Bitmap? = null
-        runBlocking {  spriteImage = spriteURL?.let { imageDownloaderTask(it) } }
+         spriteImage = spriteURL?.let { imageDownloaderTask(it) }
 
         return spriteImage
     }
