@@ -30,14 +30,25 @@ class PokemonList : Fragment() {
     private lateinit var recyclerVw: RecyclerView
 
     //TODO remove testing
-    var testList= ListPopulation (10)
 
-    private var name = mutableListOf<String?>()
-    private val type1 = mutableListOf<String?>()
-    private val type2 = mutableListOf<String?>()
-    private val image = mutableListOf<Bitmap?>()
+    private val pokeTestList = ArrayList<PokemonItem>(7)
+    private fun popList(){
+        for (n in 1..7)
+        {  //Initializes the Lists with the information of each pokemon
+            pokeTestList.add(PokemonItem(n))
+        }
+    }
 
-
+//    private fun popList(lo: Int, hi: Int){
+//        if(hi>lo){
+//            val mid: Int = (hi+lo)/2
+//            popList(lo,mid)
+//            popList(mid+1,hi)
+//            for(n in lo..hi){
+//                pokeTestList.add(PokemonItem(n))
+//            }
+//        }
+//    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -54,22 +65,13 @@ class PokemonList : Fragment() {
         // Inflates the layout for this fragment
         val view: View= inflater.inflate(R.layout.fragment_pokemon_list, container, false)
 
-        //TODO remove testing
-        type1.addAll(testList.types1OfPokemon)
-        type2.addAll(testList.types2OfPokemon)
+        popList()
 
-        //sets image List to that of the ListPopulation instance's
-        image.addAll(testList.imgOfPokemon)
-        //sets name List to that of the ListPopulation instance's
-        name.addAll(testList.namesOfPokemon)
 
         recyclerVw = view.findViewById(R.id.recyclerView)
-        val customListView = activity?.let { CustomListView(it,name, type1,type2, image) }
-
-        customListView?.notifyDataSetChanged()
-
+        val customAdapter = CustomRecyclerAdapter(pokeTestList)
+        recyclerVw.adapter = customAdapter
         recyclerVw.layoutManager = LinearLayoutManager(context)
-        recyclerVw.adapter = customListView
         recyclerVw.setHasFixedSize(true)
         // Launches fragment to proper Pokemon information page
 //        recyclerVw.onItemClickListener (

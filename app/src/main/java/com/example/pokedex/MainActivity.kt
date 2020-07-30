@@ -30,7 +30,7 @@ private fun <E> MutableList<E>.addAll(elements: MutableList<E?>) {
 }
 
 /**Pre: oldString must be a string in all lowerCase
- * Post:  Parses through the JSON file to find the type in the JSON data
+ * Post:  Returns newstring with the first letter capitalized
  */
 
 fun cap( oldString: String?): String?{

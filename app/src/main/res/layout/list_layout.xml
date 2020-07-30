@@ -2,15 +2,16 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ConstraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_margin="4dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="5dp"
         android:background="#FFFFFF"
-        android:padding="15dp">
+        android:padding="8dp">
 
 
         <ImageView
@@ -50,9 +51,9 @@
             android:layout_marginTop="0dp"
             android:layout_toEndOf="@+id/tvPokemonType1"
             android:background="#75CFB4FF"
-
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             android:textColor="@android:color/black" />
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
