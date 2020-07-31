@@ -31,24 +31,7 @@ class PokemonList : Fragment() {
 
     //TODO remove testing
 
-    private val pokeTestList = ArrayList<PokemonItem>(10)
-    private fun popList(){
-        for (n in 1..10)
-        {  //Initializes the Lists with the information of each pokemon
-            pokeTestList.add(PokemonItem(n))
-        }
-    }
-
-//    private fun popList(lo: Int, hi: Int){
-//        if(hi>lo){
-//            val mid: Int = (hi+lo)/2
-//            popList(lo,mid)
-//            popList(mid+1,hi)
-//            for(n in lo..hi){
-//                pokeTestList.add(PokemonItem(n))
-//            }
-//        }
-//    }
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -64,8 +47,6 @@ class PokemonList : Fragment() {
     ): View? {
         // Inflates the layout for this fragment
         val view: View= inflater.inflate(R.layout.fragment_pokemon_list, container, false)
-
-        popList()
 
 
         recyclerVw = view.findViewById(R.id.recyclerView)
@@ -125,7 +106,4 @@ class PokemonList : Fragment() {
     }
 }
 
-private fun <E> MutableList<E>.addAll(elements: MutableList<E?>) {
-    for(n in elements) if (n != null) add(n)
 
-}

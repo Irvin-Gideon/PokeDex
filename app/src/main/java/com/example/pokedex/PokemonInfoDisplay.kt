@@ -9,6 +9,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.lang.Exception
 
@@ -50,22 +53,28 @@ class PokemonInfoDisplay : Fragment(R.layout.fragment_pokemon_info_display) {
         var entry=this.arguments?.getString("pokemonName") // Retrieves the bundle pair passed from the other fragment
 
 
-        val pokemonSprite = getPokemonSprite(entry)
+        CoroutineScope(Dispatchers.Main).launch {
+            val pokemonSprite = getPokemonSprite(entry)
+            pokemonInfoImageView.scaleX=.5F
+            pokemonInfoImageView.scaleY=.5F
 
-        pokemonInfoImageView.setImageBitmap(pokemonSprite)
-        pokemonInfoTypeView.text= getPokemonType(entry)
+            pokemonInfoImageView.setImageBitmap(pokemonSprite)
+            pokemonInfoTypeView.text = getPokemonType(entry)
 
-        //animate on image entry
-        pokemonInfoImageView.y=-1000F
-        pokemonInfoImageView.animate().translationYBy(1000F).duration = 500
 
-        if(entry=="farfetchd"){ //  for the abnormal cases
-            entry="farfetch'd"
+            //animate on image entry
+            pokemonInfoImageView.animate().scaleXBy(.8F).scaleYBy(.8F).duration = 300
+
+
+            if(entry=="farfetchd"){ //  for the abnormal cases
+                entry="farfetch'd"
+            }
+            if(entry=="mr-mime"){// for the abnormal cases
+                entry="mr. Mime"
+            }
+            pokemonInfoTextView.text = cap(entry)
+
         }
-        if(entry=="mr-mime"){// for the abnormal cases
-            entry="mr. Mime"
-        }
-        pokemonInfoTextView.text = cap(entry)
         return view
     }
 
@@ -95,11 +104,10 @@ class PokemonInfoDisplay : Fragment(R.layout.fragment_pokemon_info_display) {
  * the data from. If 'pokemonName' is an invalid string it will return an error message
  * Post:  Parses through the JSON file to find the type in the JSON data
  */
- fun getPokemonType(pokemonName: String?): String? {
-    var s=""
-    runBlocking{//Launches the task with runBlocking so it executes sequentially
-        s=downloaderTask("https://pokeapi.co/api/v2/pokemon/$pokemonName")
-    }
+ suspend fun getPokemonType(pokemonName: String?): String? {
+
+    val s=downloaderTask("https://pokeapi.co/api/v2/pokemon/$pokemonName")
+
     val typesArr = parseJSONObj(s,"types")
     val types= parseJSONArr(typesArr,0)
     val firstType= parseJSONObj(types,"type")
@@ -110,17 +118,14 @@ class PokemonInfoDisplay : Fragment(R.layout.fragment_pokemon_info_display) {
  * the data from. If 'pokemonName' is an invalid string it will return an error message
  * Post:  Parses through the JSON file to find the type in the JSON data
  */
-fun getPokemonSprite(pokemonName: String?): Bitmap? {
+suspend fun getPokemonSprite(pokemonName: String?): Bitmap? {
     return try {
-        var s = ""
-        runBlocking {//Launches the task with runBlocking so it executes sequentially
-            s = downloaderTask("https://pokeapi.co/api/v2/pokemon/$pokemonName")
-        }
+        val s = downloaderTask("https://pokeapi.co/api/v2/pokemon/$pokemonName")
+
         val typesArr = parseJSONObj(s, "sprites")
         val spriteURL = parseJSONObj(typesArr, "front_default")
 
-        var spriteImage: Bitmap? = null
-        runBlocking { spriteImage = spriteURL?.let { imageDownloaderTask(it) } }
+        var spriteImage: Bitmap? =spriteURL?.let { imageDownloaderTask(it) }
 
         spriteImage
     }catch (e: Exception){

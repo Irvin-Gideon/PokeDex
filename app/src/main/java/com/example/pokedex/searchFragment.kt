@@ -66,7 +66,7 @@ class searchFragment : Fragment() {
                         if (entry == "farfetch'd") { //  for the abnormal cases
                             entry = "farfetchd"
                         }
-                        if (entry == "mr. mime" || entry == "mr mime") {// for the abnormal cases
+                        if (entry == "mr. mime" || entry == "mr mime") { // for the abnormal cases
                             entry = "mr-mime"
                         }
                         //Sends whatever user typed into the editText in a bundle pair to the next fragment

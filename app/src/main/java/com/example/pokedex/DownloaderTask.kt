@@ -11,7 +11,10 @@ import org.json.JSONObject
  * we will be using it to create a class which gets the website information.
  * This downloader will execute an API call to an external website. From there we download the
  * JSON data and manipulate in our main thread.
- *
+ **/
+
+
+/**
  * Pre: 'string' must be a link to a website in plain text
  * Post: Returns the HTML information from the url in the form of a string
 **/
@@ -28,20 +31,23 @@ import org.json.JSONObject
 
 /** Helper function used to parse through a string to find required information
  * and convert it to a JSON Object
+ *
  * Pre: 's' must be a string containing JSON data
  * Post: Returns a specified JSON object of data from the  file
  */
-fun parseJSONObj (s: String?, info: String): String? {
-     try {
-         if(s.equals(null)){
-             return null
-         }
-        val file =JSONObject(s)
-         return file.getString(info)
+suspend fun parseJSONObj (s: String?, info: String): String? {
+    return withContext(Dispatchers.Default) {// Heavy tasks like parsing through JSON are best handled in the default dispatching thread
+        try {
+            if (s.equals(null)) {
+                return@withContext null
+            }
+            val file = JSONObject(s)
+            return@withContext file.getString(info)
 
-    } catch (e: Exception) {
-        e.printStackTrace()
-         return null
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return@withContext null
+        }
     }
 }
 
@@ -51,19 +57,20 @@ fun parseJSONObj (s: String?, info: String): String? {
  * Pre: 's' must be a string containing JSON data
  * Post: Returns a specified JSON array of data from the file
  */
-fun parseJSONArr (s: String?, index: Int): String? {
-    try{
-        if(s.equals(null)){
-            return null
+suspend fun parseJSONArr (s: String?, index: Int): String? {
+    return withContext(Dispatchers.Default) {// Heavy tasks like parsing through JSON are best handled in the default dispatching thread
+        try {
+            if (s.equals(null)) {
+                return@withContext null
+            }
+            val file = JSONArray(s)
+            return@withContext file.get(index).toString()
+
+        } catch (e: Exception) {
+            //e.printStackTrace()
+            return@withContext null
         }
-        val file = JSONArray(s)
-        return file.get(index).toString()
-
-    } catch (e: Exception) {
-        e.printStackTrace()
-        return null
     }
-
 }
 
 
