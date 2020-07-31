@@ -5,6 +5,9 @@ import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.*
 
@@ -12,7 +15,9 @@ var pokeTestListSize = 100
 val pokeTestList = ArrayList<PokemonItem>(pokeTestListSize)
 
 class MainActivity : AppCompatActivity() {
-    private var SPLASH_TIME = 3000 //This is 3 seconds
+    private var SPLASH_TIME = 5000 //This is 3 seconds
+
+    private var imageView : ImageView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +26,30 @@ class MainActivity : AppCompatActivity() {
         popListVisible(pokeTestList) // Cheaty way to make sure the user diesnt load into a blank screen 
 
 
+        window.setBackgroundDrawable(null)
+        initializeView()
+        animateLogo()
+        goToMainActivity()
+
+
+
+    }
+
+    private fun initializeView()
+    {
+        imageView = findViewById(R.id.splashLogo)
+    }
+
+
+    private fun animateLogo(){
+        val fadingInAnimation: Animation = AnimationUtils.loadAnimation(this,R.anim.fade_in)
+        fadingInAnimation.duration = SPLASH_TIME.toLong()
+
+        imageView?.startAnimation(fadingInAnimation)
+    }
+
+    private fun goToMainActivity()
+    {
         Handler().postDelayed({ //Do any action here. Now we are moving to next page
             val mySuperIntent = Intent(this, ActivityHome::class.java)
             startActivity(mySuperIntent)
@@ -30,11 +59,7 @@ class MainActivity : AppCompatActivity() {
             finish()
         }, SPLASH_TIME.toLong())
 
-
-
     }
-
-
 }
 
 /**Pre: list must be an empty arrayList holding PokemonItem in all lowerCase
