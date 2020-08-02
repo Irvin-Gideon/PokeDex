@@ -19,7 +19,8 @@ import kotlinx.android.synthetic.main.list_layout.view.*
  */
 class CustomRecyclerAdapter//Custom recyclerView adapter constructor
     (
-    private val PokemonList: List<PokemonItem>//List that reflects the elements in the similarly named objects in
+    private val PokemonList: List<PokemonItem>,
+    private val listener: OnItemClickListener //List that reflects the elements in the similarly named objects in
 ) : RecyclerView.Adapter<CustomRecyclerAdapter.ViewHolder>() {
 
 
@@ -52,63 +53,28 @@ class CustomRecyclerAdapter//Custom recyclerView adapter constructor
     }
 
     //ViewHolder class allows us to assign view to specific ids
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
         var textVw1: TextView? = view.tvPokemonName
         var textVw2: TextView? = view.tvPokemonType1
         var textVw3: TextView? = view.tvPokemonType2
         var imageVw: ImageView? = view.imageView
 
+        init{
+            view.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position = adapterPosition
+            if(position != RecyclerView.NO_POSITION){
+                listener.onItemClick(position)
+            }
+        }
+
     }
-
-
-//    /**
-//     * Gives us a view that displays the data at a specified position in the data set
-//     * through
-//     * @param position : The position of the item within our adapter's data set of the item we want to view
-//     * @param convertView View?: The old view to reuse
-//     * @param parent ViewGroup: The parent that this view will be attached to
-//     * @return View
-//     */
-//    fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-//        var row  : View? = convertView
-//        val vwHolder: ViewHolder?
-//
-//        //Runs if view value is currently null
-//        if (row == null)
-//        {
-//            val layoutInflater : LayoutInflater = context.layoutInflater
-//
-//            //Allows us to specify the view and prevent attachment to the root
-//            row  = layoutInflater.inflate(R.layout.list_layout, null,true)
-//            vwHolder = ViewHolder(row )
-//            row .tag = vwHolder
-//        }
-//        else{
-//            vwHolder = row .tag as ViewHolder?
-//
-//        }
-//
-//        if (vwHolder != null) {
-//            vwHolder.imageVw?.setImageBitmap(image[position])
-//            vwHolder.textVw1?.text = name[position]
-//            vwHolder.textVw2?.text = type1[position]
-//            vwHolder.textVw3?.text = type2[position]
-//
-//            if(type2[position]==null){
-//                vwHolder.textVw3?.setBackgroundColor(Color.WHITE)
-//            }
-//        }
-//
-//
-//        return row  as View
-//    }
-//
-//
-
-
-
-
+    interface OnItemClickListener{ //abstract class that is used in our list fragment to inherit from
+        fun onItemClick(position: Int)
+    }
 
 
 }

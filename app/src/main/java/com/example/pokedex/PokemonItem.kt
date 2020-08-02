@@ -25,6 +25,7 @@ class PokemonItem(private val pokemonID: Int) {
         }
 
     }
+
     /**Pre: pokemonID must be an integer that specifies which pokemon the function call has to retrieve
      * the data from. ID's range from 1-807.
      * Post: Parses through the JSON file to find the name in the JSON data

@@ -1,27 +1,28 @@
 package com.example.pokedex
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.lang.Exception
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-lateinit var pokemonInfoTextView: TextView
+lateinit var pokemonInfoNameView: TextView
 lateinit var pokemonInfoImageView: ImageView
-lateinit var pokemonInfoTypeView: TextView
+lateinit var pokemonInfoType1View: TextView
+lateinit var pokemonInfoType2View: TextView
+
 /**
  * A simple [Fragment] subclass.
  * Use the [PokemonInfoDisplay.newInstance] factory method to
@@ -46,20 +47,28 @@ class PokemonInfoDisplay : Fragment(R.layout.fragment_pokemon_info_display) {
         // Inflate the layout for this fragment
         val view =inflater.inflate(R.layout.fragment_pokemon_info_display, container, false)
 
-        pokemonInfoTextView = view.findViewById(R.id.pokemonInfoText)
+        pokemonInfoNameView = view.findViewById(R.id.pokemonInfoName)
         pokemonInfoImageView= view.findViewById(R.id.pokemonInfoImage)
-        pokemonInfoTypeView =view.findViewById(R.id.pokemonInfoType)
+        pokemonInfoType1View =view.findViewById(R.id.pokemonInfoType1)
+        pokemonInfoType2View =view.findViewById(R.id.pokemonInfoType2)
 
         var entry=this.arguments?.getString("pokemonName") // Retrieves the bundle pair passed from the other fragment
 
 
         CoroutineScope(Dispatchers.Main).launch {
-            val pokemonSprite = getPokemonSprite(entry)
+            val webpage =downloaderTask("https://pokeapi.co/api/v2/pokemon/$entry")
+
+            val pokemonSprite = getPokemonSprite(webpage)
             pokemonInfoImageView.scaleX=.5F
             pokemonInfoImageView.scaleY=.5F
 
             pokemonInfoImageView.setImageBitmap(pokemonSprite)
-            pokemonInfoTypeView.text = getPokemonType(entry)
+            pokemonInfoType1View.text = getPokemonType1(webpage)
+            pokemonInfoType2View.text = getPokemonType2(webpage)
+            if(pokemonInfoType2View.text == null){
+                pokemonInfoType2View.setBackgroundColor(Color.WHITE)
+            }
+
 
 
             //animate on image entry
@@ -72,7 +81,7 @@ class PokemonInfoDisplay : Fragment(R.layout.fragment_pokemon_info_display) {
             if(entry=="mr-mime"){// for the abnormal cases
                 entry="mr. Mime"
             }
-            pokemonInfoTextView.text = cap(entry)
+            pokemonInfoNameView.text = cap(entry)
 
         }
         return view
@@ -104,28 +113,36 @@ class PokemonInfoDisplay : Fragment(R.layout.fragment_pokemon_info_display) {
  * the data from. If 'pokemonName' is an invalid string it will return an error message
  * Post:  Parses through the JSON file to find the type in the JSON data
  */
- suspend fun getPokemonType(pokemonName: String?): String? {
+ suspend fun getPokemonType1( webp: String): String? {
 
-    val s=downloaderTask("https://pokeapi.co/api/v2/pokemon/$pokemonName")
-
-    val typesArr = parseJSONObj(s,"types")
+    val typesArr = parseJSONObj(webp,"types")
     val types= parseJSONArr(typesArr,0)
     val firstType= parseJSONObj(types,"type")
-    return "Type: "+cap(parseJSONObj(firstType,"name")) //Retrieves first type and name of that type
+    return cap(parseJSONObj(firstType,"name")) //Retrieves first type and name of that type
 }
 
 /**Pre: pokemonName must be an name that specifies which pokemon the function call has to retrieve
  * the data from. If 'pokemonName' is an invalid string it will return an error message
  * Post:  Parses through the JSON file to find the type in the JSON data
  */
-suspend fun getPokemonSprite(pokemonName: String?): Bitmap? {
+suspend fun getPokemonType2(webp: String): String? {
+
+    val typesArr = parseJSONObj(webp,"types")
+    val types= parseJSONArr(typesArr,1)
+    val firstType= parseJSONObj(types,"type")
+    return cap(parseJSONObj(firstType,"name")) //Retrieves first type and name of that type
+}
+
+/**Pre: pokemonName must be an name that specifies which pokemon the function call has to retrieve
+ * the data from. If 'pokemonName' is an invalid string it will return an error message
+ * Post:  Parses through the JSON file to find the type in the JSON data
+ */
+suspend fun getPokemonSprite(webp: String): Bitmap? {
     return try {
-        val s = downloaderTask("https://pokeapi.co/api/v2/pokemon/$pokemonName")
 
-        val typesArr = parseJSONObj(s, "sprites")
+        val typesArr = parseJSONObj(webp, "sprites")
         val spriteURL = parseJSONObj(typesArr, "front_default")
-
-        var spriteImage: Bitmap? =spriteURL?.let { imageDownloaderTask(it) }
+        val spriteImage: Bitmap? =spriteURL?.let { imageDownloaderTask(it) }
 
         spriteImage
     }catch (e: Exception){

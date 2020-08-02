@@ -40,6 +40,7 @@
             android:background="#75CFB4FF"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
+            android:fontFamily="monospace"
             android:textColor="@android:color/black" />
 
         <TextView
@@ -53,6 +54,7 @@
             android:background="#75CFB4FF"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
+            android:fontFamily="monospace"
             android:textColor="@android:color/black" />
 
     </RelativeLayout>

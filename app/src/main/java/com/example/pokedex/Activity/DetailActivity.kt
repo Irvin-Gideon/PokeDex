@@ -19,14 +19,14 @@ class DetailActivity : AppCompatActivity() {
 
 
         mImageView = findViewById(R.id.pokemonInfoImage)
-        mTextView = findViewById(R.id.pokemonInfoType)
-        mTextView2 = findViewById(R.id.pokemonInfoTypeMulti)
+        mTextView = findViewById(R.id.pokemonInfoType1)
+        mTextView2 = findViewById(R.id.pokemonInfoType2)
         val mBundle = intent.extras //Get the attached bundle from the intent
 
         if (mBundle != null) {
             mImageView.setImageBitmap(mBundle["pokemonSprite"] as Bitmap?)
-            mTextView.text = mBundle["pokemonType"] as String
-            mTextView2.text = mBundle["pokemonType2"] as String
+            mTextView.text = mBundle["pokemonType"] as String?
+            mTextView2.text = mBundle["pokemonType2"] as String?
         }
 
     }

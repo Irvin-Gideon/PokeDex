@@ -7,8 +7,9 @@
     android:background="#FFFFFF"
     tools:context=".PokemonInfoDisplay">
 
+
     <TextView
-        android:id="@+id/pokemonInfoText"
+        android:id="@+id/pokemonInfoName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/acme"
@@ -27,34 +28,37 @@
         android:contentDescription="image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.165" />
 
     <TextView
-        android:id="@+id/pokemonInfoType"
+        android:id="@+id/pokemonInfoType1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#75CFB4FF"
+        android:fontFamily="monospace"
         android:textColor="#100F0F"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.147"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.522" />
+        app:layout_constraintTop_toBottomOf="@+id/pokemonInfoName"
+        app:layout_constraintVertical_bias="0.1" />
 
     <TextView
-        android:id="@+id/pokemonInfoTypeMulti"
+        android:id="@+id/pokemonInfoType2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#75CFB4FF"
+        android:fontFamily="monospace"
         android:textColor="#100F0F"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.357"
+        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.522" />
+        app:layout_constraintTop_toBottomOf="@+id/pokemonInfoName"
+        app:layout_constraintVertical_bias="0.1" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,7 +9,5 @@ class ActivityHome : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //val tvWelcome : TextView = findViewById(R.id.tvWelcome)
-       // tvWelcome.animate().rotationBy(1440F).duration = 300
     }
 }

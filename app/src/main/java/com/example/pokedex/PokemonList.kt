@@ -23,7 +23,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [PokemonList.newInstance] factory method to
  * create an instance of this fragment.
  */
-class PokemonList : Fragment() {
+class PokemonList : Fragment(), CustomRecyclerAdapter.OnItemClickListener {
     private var param1: String? = null
     private var param2: String? = null
 
@@ -50,24 +50,12 @@ class PokemonList : Fragment() {
 
 
         recyclerVw = view.findViewById(R.id.recyclerView)
-        val customAdapter = CustomRecyclerAdapter(pokeTestList)
+        val customAdapter = CustomRecyclerAdapter(pokeTestList, this)
         recyclerVw.adapter = customAdapter
         recyclerVw.layoutManager = LinearLayoutManager(context)
         recyclerVw.setHasFixedSize(true)
-        // Launches fragment to proper Pokemon information page
-//        recyclerVw.onItemClickListener (
-//            AdapterView.OnItemClickListener { parent, view, position, id ->
-//               // view.findNavController().navigate(R.id.action_pokemonList_to_pokemonInfoDisplay);
-//
-//                //Creates an Intent object by giving the context and the class of next activity to be opened
-//                // A passive data structure holding an abstract description of an action to be performed.
-//                val mIntent: Intent? = Intent(this.context, DetailActivity::class.java)
-//                mIntent?.putExtra("pokemonSprite", image[position]) //Attach the key value pair using putExtra to this intent
-//                mIntent?.putExtra("pokemonType", type1[position])
-//                mIntent?.putExtra("pokemonType2", type2[position])
-//                startActivity(mIntent)
-//            }
-//        )
+
+
         setHasOptionsMenu(true)
         return view
     }
@@ -85,6 +73,16 @@ class PokemonList : Fragment() {
                 || super.onOptionsItemSelected(item)
     }
 
+    override fun onItemClick(position: Int) {
+        //Creates an Intent object by giving the context and the class of next activity to be opened
+        // A passive data structure holding an abstract description of an action to be performed.
+        val clickedItem: PokemonItem = pokeTestList[position]
+        val mIntent: Intent? = Intent(this.context, DetailActivity::class.java)
+        mIntent?.putExtra("pokemonSprite", clickedItem.pokemonSprite) //Attach the key value pair using putExtra to this intent
+        mIntent?.putExtra("pokemonType", clickedItem.pokemonType1)
+        mIntent?.putExtra("pokemonType2", clickedItem.pokemonType2)
+        startActivity(mIntent)
+}
     companion object {
         /**
          * Use this factory method to create a new instance of
