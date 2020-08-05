@@ -8,7 +8,10 @@ import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.pokedex.Activity.DataBaseHelper
+import java.lang.Exception
 
 var pokeTestListSize = 100
 val pokeTestList = ArrayList<PokemonItem>(pokeTestListSize)
@@ -22,6 +25,27 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        lateinit var pokemonItem: PokemonItem
+
+        try{
+            pokemonItem = PokemonItem(-1)
+            Toast.makeText(this,pokemonItem.toString(), Toast.LENGTH_SHORT).show()
+        }
+        catch(e: Exception){
+            Toast.makeText(this, "Error creating List", Toast.LENGTH_SHORT).show()
+            PokemonItem(-1)
+        }
+
+
+        val dataBaseHelper = DataBaseHelper(this)
+
+        val success: Boolean = dataBaseHelper.addOne(PokemonItem(22))
+
+        Toast.makeText(this, "Success: $success", Toast.LENGTH_SHORT).show()
+
+
+
+
         popListVisible(pokeTestList) // Cheaty way to make sure the user diesnt load into a blank screen
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 

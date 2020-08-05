@@ -6,7 +6,7 @@ import kotlinx.coroutines.*
 
 class PokemonItem(private val pokemonID: Int) {
     var pokemonSprite : Bitmap? = null
-    var pokemonName: String? =null
+    var pokemonName: String? = "Bob"
     var pokemonType1: String? = null
     var pokemonType2: String? = null
     private var webPage: String? = null
@@ -32,7 +32,7 @@ class PokemonItem(private val pokemonID: Int) {
      */
     private suspend fun getPokemonName() {
         val species = parseJSONObj(webPage,"species")
-        pokemonName= cap(parseJSONObj(species,"name"))
+        pokemonName = cap(parseJSONObj(species,"name"))
     }
 
     /**Pre: pokemonID must be an integer that specifies which pokemon the function call has to retrieve
@@ -43,7 +43,7 @@ class PokemonItem(private val pokemonID: Int) {
         val typesArr = parseJSONObj(webPage,"types")
         val types= parseJSONArr(typesArr,0)
         val firstType= parseJSONObj(types,"type")
-        pokemonType1= cap(parseJSONObj(firstType,"name")) //Retrieves first type and name of that type
+        pokemonType1 = cap(parseJSONObj(firstType,"name")) //Retrieves first type and name of that type
     }
 
     /**Pre: pokemonID must be an integer that specifies which pokemon the function call has to retrieve
@@ -56,7 +56,7 @@ class PokemonItem(private val pokemonID: Int) {
 
         val types= parseJSONArr(typesArr,1) //if there is no second type
         val firstType= parseJSONObj(types,"type")
-        pokemonType2= cap(parseJSONObj(firstType,"name")) //Retrieves first type and name of that type
+        pokemonType2 = cap(parseJSONObj(firstType,"name")) //Retrieves first type and name of that type
     }
 
     /**Pre: pokemonID must be an integer that specifies which pokemon the function call has to retrieve
@@ -67,7 +67,7 @@ class PokemonItem(private val pokemonID: Int) {
         val typesArr = parseJSONObj(webPage,"sprites")
         spriteURL = parseJSONObj(typesArr, "front_default")
 
-        pokemonSprite= spriteURL?.let { imageDownloaderTask(it) }
+        pokemonSprite = spriteURL?.let { imageDownloaderTask(it) }
     }
 
 }
