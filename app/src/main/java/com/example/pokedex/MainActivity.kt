@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         lateinit var pokemonItem: PokemonItem
 
         try{
-            pokemonItem = PokemonItem(-1)
+            pokemonItem = PokemonItem(4)
             Toast.makeText(this,pokemonItem.toString(), Toast.LENGTH_SHORT).show()
         }
         catch(e: Exception){
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         val dataBaseHelper = DataBaseHelper(this)
 
-        val success: Boolean = dataBaseHelper.addOne(PokemonItem(22))
+        val success: Boolean = dataBaseHelper.addOne(pokemonItem)
 
         Toast.makeText(this, "Success: $success", Toast.LENGTH_SHORT).show()
 

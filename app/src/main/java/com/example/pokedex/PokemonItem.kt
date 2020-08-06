@@ -6,7 +6,7 @@ import kotlinx.coroutines.*
 
 class PokemonItem(private val pokemonID: Int) {
     var pokemonSprite : Bitmap? = null
-    var pokemonName: String? = "Bob"
+    var pokemonName: String? = null
     var pokemonType1: String? = null
     var pokemonType2: String? = null
     private var webPage: String? = null

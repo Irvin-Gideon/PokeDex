@@ -19,7 +19,8 @@ import java.net.URL
  * Post: Returns the image stored at the link given in a bitmap file format
  **/
 
-suspend fun imageDownloaderTask(s: String): Bitmap? {
+suspend fun imageDownloaderTask(s: String?): Bitmap? {
+    if (s==null) return null
     return withContext(Dispatchers.IO) {
         try {
             val url = URL(s) // converts string input to a URL Object
