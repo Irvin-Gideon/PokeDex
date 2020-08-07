@@ -40,8 +40,10 @@ class MainActivity : AppCompatActivity() {
         val dataBaseHelper = DataBaseHelper(this)
 
         val success: Boolean = dataBaseHelper.addOne(pokemonItem)
-
         Toast.makeText(this, "Success: $success", Toast.LENGTH_SHORT).show()
+
+        //val everyone: MutableList<PokemonItem> = dataBaseHelper.getEveryOne()
+      //  Toast.makeText(this, everyone.toString(), Toast.LENGTH_SHORT).show()
 
 
 

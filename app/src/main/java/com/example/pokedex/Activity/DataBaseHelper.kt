@@ -2,6 +2,7 @@ package com.example.pokedex.Activity
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
@@ -58,5 +59,46 @@ class DataBaseHelper(
         return true
     }
 
+//    //Create a method that will SELECT all records from
+//    //the table
+//    fun getEveryOne() : MutableList<PokemonItem> {
+//
+//        val returnList: MutableList<PokemonItem> = ArrayList()
+//
+//        //Get data from the database
+//        val queryString = "SELECT * FROM " + POKEMON_TABLE
+//
+//        val db: SQLiteDatabase = this.readableDatabase
+//
+//        val cursor: Cursor = db.rawQuery(queryString, null)
+//
+//        if(cursor.moveToFirst())
+//        {
+//            //Loop through cursor(result set) and create new PokemonItem
+//            //and put them in the return list.
+//
+//            do {
+//                val pokemonID : Int = cursor.getInt(0)
+//                val pokeName: String = cursor.getString(1)
+//                val pokeTypeOne: String = cursor.getString(2)
+//                val pokeTypeTwo: String = cursor.getString(3)
+//                val pokeSpriteUrl: String = cursor.getString(4)
+//
+//                //TODO Not built to construct with more parameters and the db is still empty
+//                val newPokemonItem: PokemonItem = PokemonItem(pokemonID)
+//                returnList.add(newPokemonItem)
+//
+//            }while (cursor.moveToNext())
+//
+//
+//        }
+//        else{
+//            //In failure nothing is added to the list
+//        }
+//
+//        cursor.close()
+//        db.close()
+//        return returnList
+//    }
 }
 
