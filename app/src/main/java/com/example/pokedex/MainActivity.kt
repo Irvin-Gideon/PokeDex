@@ -11,11 +11,14 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pokedex.Activity.DataBaseHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.lang.Exception
 
 var pokeTestListSize = 100
-val pokeTestList = ArrayList<PokemonItem>(pokeTestListSize)
-
+val pokeTestList = ArrayList<ReworkedPokemonItem>(pokeTestListSize)
+lateinit var dataBaseHelper: DataBaseHelper
 
 class MainActivity : AppCompatActivity() {
     private var SPLASH_TIME = 5000 //This is 5 seconds
@@ -25,30 +28,22 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        lateinit var pokemonItem: PokemonItem
 
-        try{
-            pokemonItem = PokemonItem(4)
-            Toast.makeText(this,pokemonItem.toString(), Toast.LENGTH_SHORT).show()
+
+         dataBaseHelper= DataBaseHelper(this)
+        CoroutineScope(Dispatchers.Main).launch {
+            if(!dataBaseHelper.tableExists()) {
+                dataBaseHelper.addList(50)
+                SPLASH_TIME=9000
+            }else{SPLASH_TIME=3000}
+            val everyone: ArrayList<ReworkedPokemonItem> = dataBaseHelper.getEveryOne()
+            pokeTestList.addAll(everyone)
         }
-        catch(e: Exception){
-            Toast.makeText(this, "Error creating List", Toast.LENGTH_SHORT).show()
-            PokemonItem(-1)
-        }
-
-
-        val dataBaseHelper = DataBaseHelper(this)
-
-        val success: Boolean = dataBaseHelper.addOne(pokemonItem)
-        Toast.makeText(this, "Success: $success", Toast.LENGTH_SHORT).show()
-
-        //val everyone: MutableList<PokemonItem> = dataBaseHelper.getEveryOne()
-      //  Toast.makeText(this, everyone.toString(), Toast.LENGTH_SHORT).show()
 
 
 
-
-        popListVisible(pokeTestList) // Cheaty way to make sure the user diesnt load into a blank screen
+        //TODO Cleanup old
+        //popListVisible(pokeTestList) // Cheaty way to make sure the user diesnt load into a blank screen
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
 
@@ -72,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 //        fadingInAnimation.duration = SPLASH_TIME.toLong()
 //        imageView?.startAnimation(fadingInAnimation)
         imageView?.alpha=0F
-        imageView?.animate()?.rotationBy(1440F)?.duration=2500L
+        imageView?.animate()?.rotationBy(1440F)?.duration=SPLASH_TIME/4L
         imageView?.animate()?.alpha(1F)?.duration=SPLASH_TIME.toLong()
     }
 
@@ -81,8 +76,9 @@ class MainActivity : AppCompatActivity() {
         Handler().postDelayed({ //Do any action here. Now we are moving to next page
             val mySuperIntent = Intent(this, ActivityHome::class.java)
             startActivity(mySuperIntent)
-            popListRest(pokeTestList, pokeTestList.size+1,pokeTestList.size+21)
-            popListRest(pokeTestList, pokeTestList.size+1,pokeTestList.size+21)
+            //TODO cleanup old
+            //popListRest(pokeTestList, pokeTestList.size+1,pokeTestList.size+21)
+            //popListRest(pokeTestList, pokeTestList.size+1,pokeTestList.size+21)
 
 
             //This 'finish()' is for exiting the app when back button pressed from Home page which is ActivityHome
@@ -91,6 +87,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 }
+
+
 
 /**Pre: list must be an empty arrayList holding PokemonItem in all lowerCase
  * Post:  Adds the first n amount of pokemon

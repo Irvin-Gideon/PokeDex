@@ -12,9 +12,10 @@ class ReworkedPokemonItem(var pokemonName: String?, var pokemonType1: String?, v
         CoroutineScope(Dispatchers.Main).launch {
             pokemonSprite = imageDownloaderTask(spriteURL)
         }
+//        fun toString(): String {
+//            return "$pokemonName : $pokemonType1 and $pokemonType2 "
+//        }
 
     }
 
-//idea is to make it so that we can pull name, type, etc.. straight from database class. Then we save it in the database
-    //pull it from db when needed and create use that data to create these objects and use them to populate recylcer
 }
