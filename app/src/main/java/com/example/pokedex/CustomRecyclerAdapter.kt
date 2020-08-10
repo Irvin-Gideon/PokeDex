@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.list_layout.view.*
  */
 class CustomRecyclerAdapter//Custom recyclerView adapter constructor
     (
-    private val PokemonList: List<PokemonItem>,
+    private val PokemonList: List<ReworkedPokemonItem>,
     private val listener: OnItemClickListener //List that reflects the elements in the similarly named objects in
 ) : RecyclerView.Adapter<CustomRecyclerAdapter.ViewHolder>() {
 
@@ -33,7 +33,7 @@ class CustomRecyclerAdapter//Custom recyclerView adapter constructor
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentItem: PokemonItem = PokemonList[position]
+        val currentItem: ReworkedPokemonItem = PokemonList[position]
         holder.imageVw?.setImageBitmap(currentItem.pokemonSprite as Bitmap?)
         holder.textVw1?.text = currentItem.pokemonName
         holder.textVw2?.text = currentItem.pokemonType1

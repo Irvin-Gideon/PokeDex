@@ -76,7 +76,7 @@ class PokemonList : Fragment(), CustomRecyclerAdapter.OnItemClickListener {
     override fun onItemClick(position: Int) {
         //Creates an Intent object by giving the context and the class of next activity to be opened
         // A passive data structure holding an abstract description of an action to be performed.
-        val clickedItem: PokemonItem = pokeTestList[position]
+        val clickedItem: ReworkedPokemonItem = pokeTestList[position]
         val mIntent: Intent? = Intent(this.context, DetailActivity::class.java)
         mIntent?.putExtra("pokemonSprite", clickedItem.pokemonSprite) //Attach the key value pair using putExtra to this intent
         mIntent?.putExtra("pokemonType", clickedItem.pokemonType1)
