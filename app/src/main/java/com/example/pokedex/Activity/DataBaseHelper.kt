@@ -31,11 +31,13 @@ class DataBaseHelper(
 
     //This is called if the database version number changes
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        TODO("Not yet implemented")
+        db?.execSQL( "DROP TABLE IF EXISTS " + POKEMON_TABLE )
+        // other calls like onCreate if necessary
+        onCreate(db)
     }
 
     private suspend fun addOne(pokemonID: Int): Boolean {
-        var webPage: String?
+        val webPage: String?
         val db: SQLiteDatabase = this.writableDatabase
         val cv = ContentValues()
         webPage = downloaderTask("https://pokeapi.co/api/v2/pokemon/$pokemonID") //Reduced to one API call
