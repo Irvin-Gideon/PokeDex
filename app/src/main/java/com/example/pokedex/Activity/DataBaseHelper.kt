@@ -31,7 +31,9 @@ class DataBaseHelper(
 
     //This is called if the database version number changes
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        TODO("Not yet implemented")
+        db?.execSQL( "DROP TABLE IF EXISTS " + POKEMON_TABLE )
+        // other calls like onCreate if necessary
+        onCreate(db)
     }
 
     private suspend fun addOne(pokemonID: Int): Boolean {
