@@ -16,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-var pokeTestListSize = 100
+var pokeTestListSize = 807
 val pokeTestList = ArrayList<ReworkedPokemonItem>(pokeTestListSize)
 lateinit var dataBaseHelper: DataBaseHelper
 
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
          dataBaseHelper= DataBaseHelper(this)
         CoroutineScope(Dispatchers.Main).launch {
             if(!dataBaseHelper.tableExists()) {
-                dataBaseHelper.addList(50)
+                dataBaseHelper.addList(pokeTestListSize)
                 SPLASH_TIME=9000
             }else{SPLASH_TIME=3000}
             val everyone: ArrayList<ReworkedPokemonItem> = dataBaseHelper.getEveryOne()

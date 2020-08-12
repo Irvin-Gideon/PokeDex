@@ -81,6 +81,8 @@ class PokemonList : Fragment(), CustomRecyclerAdapter.OnItemClickListener {
         mIntent?.putExtra("pokemonSprite", clickedItem.pokemonSprite) //Attach the key value pair using putExtra to this intent
         mIntent?.putExtra("pokemonType", clickedItem.pokemonType1)
         mIntent?.putExtra("pokemonType2", clickedItem.pokemonType2)
+        mIntent?.putExtra("pokemonName", clickedItem.pokemonName)
+
         startActivity(mIntent)
 }
     companion object {

@@ -52,40 +52,64 @@ class PokemonInfoDisplay : Fragment(R.layout.fragment_pokemon_info_display) {
         pokemonInfoType1View =view.findViewById(R.id.pokemonInfoType1)
         pokemonInfoType2View =view.findViewById(R.id.pokemonInfoType2)
 
-        var entry=this.arguments?.getString("pokemonName") // Retrieves the bundle pair passed from the other fragment
+        if(this.arguments?.getString("pokemonURL") != null) {
+            val pokeName = (this.arguments?.getString("pokemonName"))
+            val pokeType1 = (this.arguments?.getString("pokemonType1"))
+            val pokeType2 = (this.arguments?.getString("pokemonType2"))
 
+            val spriteURL = (this.arguments?.getString("pokemonURL"))
 
-        CoroutineScope(Dispatchers.Main).launch {
-            val webpage =downloaderTask("https://pokeapi.co/api/v2/pokemon/$entry")
+            CoroutineScope(Dispatchers.Main).launch {
+                val sprite: Bitmap? = imageDownloaderTask(spriteURL)
+                pokemonInfoNameView.text = (pokeName)
 
-            val pokemonSprite = getPokemonSprite(webpage)
-            pokemonInfoImageView.scaleX=.5F
-            pokemonInfoImageView.scaleY=.5F
+                pokemonInfoImageView.setImageBitmap(sprite)
+                pokemonInfoType1View.text = pokeType1
+                pokemonInfoType2View.text = pokeType2
+                if (pokemonInfoType2View.text == null) {
+                    pokemonInfoType2View.setBackgroundColor(Color.WHITE)
+                }
 
-            pokemonInfoImageView.setImageBitmap(pokemonSprite)
-            pokemonInfoType1View.text = getPokemonType1(webpage)
-            pokemonInfoType2View.text = getPokemonType2(webpage)
-            if(pokemonInfoType2View.text == null){
-                pokemonInfoType2View.setBackgroundColor(Color.WHITE)
             }
+        }
+        else{
+
+           var entry= this.arguments?.getString("pokemonName") // Retrieves the bundle pair passed from the other fragment
 
 
 
-            //animate on image entry
-            pokemonInfoImageView.animate().scaleXBy(.8F).scaleYBy(.8F).duration = 300
+            CoroutineScope(Dispatchers.Main).launch {
+                val webpage = downloaderTask("https://pokeapi.co/api/v2/pokemon/$entry")
+
+                val pokemonSprite = getPokemonSprite(webpage)
+                pokemonInfoImageView.scaleX = .5F
+                pokemonInfoImageView.scaleY = .5F
+
+                pokemonInfoImageView.setImageBitmap(pokemonSprite)
+                pokemonInfoType1View.text = getPokemonType1(webpage)
+                pokemonInfoType2View.text = getPokemonType2(webpage)
+                if (pokemonInfoType2View.text == null) {
+                    pokemonInfoType2View.setBackgroundColor(Color.WHITE)
+                }
 
 
-            if(entry=="farfetchd"){ //  for the abnormal cases
-                entry="farfetch'd"
+                //animate on image entry
+                pokemonInfoImageView.animate().scaleXBy(.8F).scaleYBy(.8F).duration = 300
+
+
+                if (entry == "farfetchd") { //  for the abnormal cases
+                    entry = "farfetch'd"
+                }
+                if (entry == "mr-mime") {// for the abnormal cases
+                    entry = "mr. Mime"
+                }
+                pokemonInfoNameView.text = cap(entry)
+
             }
-            if(entry=="mr-mime"){// for the abnormal cases
-                entry="mr. Mime"
-            }
-            pokemonInfoNameView.text = cap(entry)
-
         }
         return view
     }
+
 
     companion object {
         /**

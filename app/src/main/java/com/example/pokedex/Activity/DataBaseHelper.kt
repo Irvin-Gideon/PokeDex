@@ -57,6 +57,38 @@ class DataBaseHelper(
         }
     }
 
+    fun searchDB(userQuery : String): ReworkedPokemonItem? {
+        var toLowerCase = userQuery.toLowerCase()
+
+        val newUserQuery = cap(toLowerCase)
+
+        val queryString = "SELECT * FROM $POKEMON_TABLE WHERE $POKEMON_NAME ='$newUserQuery' "
+
+        val db: SQLiteDatabase = this.readableDatabase
+
+
+        val cursor: Cursor = db.rawQuery(queryString, null)
+
+        if(!cursor.moveToFirst())
+        {
+            return null
+        }
+        else
+        {
+
+            val pokeName: String = cursor.getString(1)
+            val pokeTypeOne: String = cursor.getString(2)
+            val pokeTypeTwo: String? = cursor.getString(3) ?: null // Null Check
+            val pokeSpriteUrl: String = cursor.getString(4)
+
+            val newPokemonItem = ReworkedPokemonItem(pokeName,pokeTypeOne,pokeTypeTwo,pokeSpriteUrl)
+
+            return newPokemonItem
+        }
+
+
+
+    }
     //Create a method that will SELECT all records from the table
     fun getEveryOne() : ArrayList<ReworkedPokemonItem> {
 

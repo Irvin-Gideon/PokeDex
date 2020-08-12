@@ -59,19 +59,35 @@ class searchFragment : Fragment() {
                 } else {
                     var entry = editSearchBar.text.toString().toLowerCase()
 
-                    if ("$entry " !in allPokemon) { //Asserts that user input is a valid pokemon choice found in the list of allPokemon
-                        Toast.makeText(context, "Invalid Value ", Toast.LENGTH_SHORT).show()
+
+                    if (dataBaseHelper.tableExists()) {
+                        val pokemonDB = dataBaseHelper.searchDB(entry)
+                        val bundle: Bundle = bundleOf(
+                            "pokemonName" to pokemonDB?.pokemonName,
+                            "pokemonType1" to pokemonDB?.pokemonType1,
+                            "pokemonType2" to pokemonDB?.pokemonType2,
+                            "pokemonURL" to pokemonDB?.spriteURL
+                        )
+                        view.findNavController()
+                            .navigate(R.id.action_searchFragment_to_pokemonInfoDisplay, bundle)
                     } else {
 
-                        if (entry == "farfetch'd") { //  for the abnormal cases
-                            entry = "farfetchd"
+
+                        if ("$entry " !in allPokemon) { //Asserts that user input is a valid pokemon choice found in the list of allPokemon
+                            Toast.makeText(context, "Invalid Value ", Toast.LENGTH_SHORT).show()
+                        } else {
+
+                            if (entry == "farfetch'd") { //  for the abnormal cases
+                                entry = "farfetchd"
+                            }
+                            if (entry == "mr. mime" || entry == "mr mime") { // for the abnormal cases
+                                entry = "mr-mime"
+                            }
+                            //Sends whatever user typed into the editText in a bundle pair to the next fragment
+                            val bundle: Bundle = bundleOf("pokemonName" to entry)
+                            view.findNavController()
+                                .navigate(R.id.action_searchFragment_to_pokemonInfoDisplay, bundle)
                         }
-                        if (entry == "mr. mime" || entry == "mr mime") { // for the abnormal cases
-                            entry = "mr-mime"
-                        }
-                        //Sends whatever user typed into the editText in a bundle pair to the next fragment
-                        val bundle: Bundle = bundleOf("pokemonName" to entry)
-                        view.findNavController().navigate(R.id.action_searchFragment_to_pokemonInfoDisplay, bundle)
                     }
                 }
             }
