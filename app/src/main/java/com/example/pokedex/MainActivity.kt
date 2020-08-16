@@ -32,26 +32,29 @@ class MainActivity : AppCompatActivity() {
 
          dataBaseHelper= DataBaseHelper(this)
         CoroutineScope(Dispatchers.Main).launch {
-            if(!dataBaseHelper.tableExists()) {
-                dataBaseHelper.addList(pokeTestListSize)
-                SPLASH_TIME=9000
-            }else{SPLASH_TIME=3000}
+            if (!dataBaseHelper.tableExists()) {
+                dataBaseHelper.addAll()
+                SPLASH_TIME = 10000
+                Log.i("info", "don't exist")
+            } else {
+                SPLASH_TIME = 3000
+            }
             val everyone: ArrayList<ReworkedPokemonItem> = dataBaseHelper.getEveryOne()
             pokeTestList.addAll(everyone)
+
+
+
+
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
+
+            window.setBackgroundDrawable(null)
+            initializeView()
+            animateLogo()
+            goToMainActivity()
+
+
         }
-
-
-
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-
-
-        window.setBackgroundDrawable(null)
-        initializeView()
-        animateLogo()
-        goToMainActivity()
-
-
-
     }
 
     private fun initializeView()

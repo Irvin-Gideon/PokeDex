@@ -3,9 +3,13 @@ package com.example.pokedex.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
+import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.pokedex.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 
 class DataBaseHelper(
@@ -17,6 +21,8 @@ class DataBaseHelper(
     private val POKEMON_TYPETWO: String = "POKEMON_TYPETWO"
     private val POKEMON_SPRITE_URL: String = "POKEMON_SPRITE_URL"
     private val COLUMN_ID: String = "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+    private val listSize = 807
+
 
 
     //This will be called the first time a database is accessed
@@ -52,11 +58,15 @@ class DataBaseHelper(
         }
         return true
     }
-    suspend fun addList(size: Int){
-        for(n in 1..size){
-            addOne(n)
+    suspend fun addAll(){
+        withContext(Dispatchers.Default) {
+            for (n in 1..listSize) {
+                addOne(n)
+            }
         }
     }
+
+
 
     fun searchDB(userQuery : String): ReworkedPokemonItem? {
         val toLowerCase = userQuery.toLowerCase()
@@ -94,6 +104,21 @@ class DataBaseHelper(
 
 
     }
+//    fun getCount(): Int{
+//        val db = this.readableDatabase
+//        val queryString =  "SELECT COUNT(*) FROM $POKEMON_TABLE"
+//        val cursor: Cursor= db.rawQuery(queryString, null)
+//
+//        if(cursor.count>0){
+//            cursor.moveToFirst()
+//            return cursor.getInt(0)
+//        }
+//        db.close()
+//        cursor.close()
+//        return 0
+//
+//    }
+
     //Create a method that will SELECT all records from the table
     fun getEveryOne() : ArrayList<ReworkedPokemonItem> {
 
@@ -143,9 +168,11 @@ class DataBaseHelper(
             cursor.close()
             return true
         }
-        db.close()
-        cursor.close()
-        return false // if table is empty
+        else{
+            db.close()
+            cursor.close()
+            return false // if table is empty
+        }
     }
 
 
