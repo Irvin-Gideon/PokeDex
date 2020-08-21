@@ -1,5 +1,5 @@
 <p align="center">
-![App Icon](https://github.com/Irvin-Gideon/PokeDex/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png)
+<img src = https://github.com/Irvin-Gideon/PokeDex/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png>
 </p>  
 
 # PokeDex
@@ -9,9 +9,13 @@ A Kotlin based version of a Pokemon Index.
 
 ![Image of Splash Screen](https://github.com/Irvin-Gideon/PokeDex/blob/master/app/src/main/res/drawable/Screenshot_20200803-154013.jpg)
 
-![In app image 1](https://github.com/Irvin-Gideon/PokeDex/blob/master/app/src/main/res/drawable/Screenshot_20200803-154021.jpg)
+<p align="center"> 
+  <img src= https://github.com/Irvin-Gideon/PokeDex/blob/master/app/src/main/res/drawable/Screenshot_20200803-154021.jpg>
+</p>  
 
-![In app image 2](https://github.com/Irvin-Gideon/PokeDex/blob/master/app/src/main/res/drawable/Screenshot_20200803-154033.jpg)
+<p align="center"> 
+<img src= https://github.com/Irvin-Gideon/PokeDex/blob/master/app/src/main/res/drawable/Screenshot_20200803-154033.jpg>
+</p>
 
 # Open API
 Pokedex using the PokeAPI for constructing RESTful API.
@@ -19,9 +23,9 @@ PokeAPI provides a RESTful API interface to highly detailed objects built from t
 
 
 # Features 
-✔ Pokedex - Search
-✔ Pokemon Info - Type
-✔ Pokemon Info - Evolution
+* ✔ Pokedex - Search
+* ✔ Pokemon Info - Type
+* ✔ Pokemon Info - Evolution
 
 
 
