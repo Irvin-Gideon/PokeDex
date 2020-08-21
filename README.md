@@ -7,7 +7,9 @@ A Kotlin based version of a Pokemon Index.
 
 # Screenshots
 
-![Image of Splash Screen](https://github.com/Irvin-Gideon/PokeDex/blob/master/app/src/main/res/drawable/Screenshot_20200803-154013.jpg)
+<p align="center">
+  <img src= https://github.com/Irvin-Gideon/PokeDex/blob/master/app/src/main/res/drawable/Screenshot_20200803-154013.jpg>
+</p>  
 
 <p align="center"> 
   <img src= https://github.com/Irvin-Gideon/PokeDex/blob/master/app/src/main/res/drawable/Screenshot_20200803-154021.jpg>
