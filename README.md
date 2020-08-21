@@ -1,9 +1,12 @@
+<p align="center">
 ![App Icon](https://github.com/Irvin-Gideon/PokeDex/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png)
+</p>  
 
 # PokeDex
 A Kotlin based version of a Pokemon Index.
 
 # Screenshots
+
 ![Image of Splash Screen](https://github.com/Irvin-Gideon/PokeDex/blob/master/app/src/main/res/drawable/Screenshot_20200803-154013.jpg)
 
 ![In app image 1](https://github.com/Irvin-Gideon/PokeDex/blob/master/app/src/main/res/drawable/Screenshot_20200803-154021.jpg)
