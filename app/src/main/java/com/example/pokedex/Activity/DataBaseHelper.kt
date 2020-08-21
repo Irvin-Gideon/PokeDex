@@ -7,17 +7,22 @@ import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.pokedex.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 
 class DataBaseHelper(
     context: Context?
 ) : SQLiteOpenHelper(context, "PokemonList.db", null, 1) {
-    val POKEMON_TABLE: String = "POKEMON_TABLE"
-    val POKEMON_NAME: String = "POKEMON_NAME"
-    val POKEMON_TYPEONE: String = "POKEMON_TYPEONE"
-    val POKEMON_TYPETWO: String = "POKEMON_TYPETWO"
-    val POKEMON_SPRITE_URL: String = "POKEMON_SPRITE_URL"
-    val COLUMN_ID: String = "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+    private val POKEMON_TABLE: String = "POKEMON_TABLE"
+    private val POKEMON_NAME: String = "POKEMON_NAME"
+    private val POKEMON_TYPEONE: String = "POKEMON_TYPEONE"
+    private val POKEMON_TYPETWO: String = "POKEMON_TYPETWO"
+    private val POKEMON_SPRITE_URL: String = "POKEMON_SPRITE_URL"
+    private val COLUMN_ID: String = "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+    private val listSize = 807
+
 
 
     //This will be called the first time a database is accessed
@@ -31,13 +36,13 @@ class DataBaseHelper(
 
     //This is called if the database version number changes
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db?.execSQL( "DROP TABLE IF EXISTS " + POKEMON_TABLE )
+        db?.execSQL("DROP TABLE IF EXISTS $POKEMON_TABLE")
         // other calls like onCreate if necessary
         onCreate(db)
     }
 
     private suspend fun addOne(pokemonID: Int): Boolean {
-        var webPage: String?
+        val webPage: String?
         val db: SQLiteDatabase = this.writableDatabase
         val cv = ContentValues()
         webPage = downloaderTask("https://pokeapi.co/api/v2/pokemon/$pokemonID") //Reduced to one API call
@@ -53,18 +58,22 @@ class DataBaseHelper(
         }
         return true
     }
-    suspend fun addList(size: Int){
-        for(n in 1..size){
-            addOne(n)
+    suspend fun addAll(){
+        withContext(Dispatchers.Default) {
+            for (n in 1..listSize) {
+                addOne(n)
+            }
         }
     }
 
+
+
     fun searchDB(userQuery : String): ReworkedPokemonItem? {
-        var toLowerCase = userQuery.toLowerCase()
+        val toLowerCase = userQuery.toLowerCase()
 
         val newUserQuery = cap(toLowerCase)
 
-        val queryString = "SELECT * FROM $POKEMON_TABLE WHERE $POKEMON_NAME ='$newUserQuery' "
+        val queryString = "SELECT * FROM $POKEMON_TABLE WHERE $POKEMON_NAME ='$newUserQuery' " // Searches table for row with matching name
 
         val db: SQLiteDatabase = this.readableDatabase
 
@@ -73,6 +82,8 @@ class DataBaseHelper(
 
         if(!cursor.moveToFirst())
         {
+            cursor.close()
+            db.close()
             return null
         }
         else
@@ -85,12 +96,29 @@ class DataBaseHelper(
 
             val newPokemonItem = ReworkedPokemonItem(pokeName,pokeTypeOne,pokeTypeTwo,pokeSpriteUrl)
 
+            cursor.close()
+            db.close()
             return newPokemonItem
         }
 
 
 
     }
+//    fun getCount(): Int{
+//        val db = this.readableDatabase
+//        val queryString =  "SELECT COUNT(*) FROM $POKEMON_TABLE"
+//        val cursor: Cursor= db.rawQuery(queryString, null)
+//
+//        if(cursor.count>0){
+//            cursor.moveToFirst()
+//            return cursor.getInt(0)
+//        }
+//        db.close()
+//        cursor.close()
+//        return 0
+//
+//    }
+
     //Create a method that will SELECT all records from the table
     fun getEveryOne() : ArrayList<ReworkedPokemonItem> {
 
@@ -140,9 +168,11 @@ class DataBaseHelper(
             cursor.close()
             return true
         }
-        db.close()
-        cursor.close()
-        return false // if table is empty
+        else{
+            db.close()
+            cursor.close()
+            return false // if table is empty
+        }
     }
 
 

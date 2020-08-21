@@ -52,16 +52,22 @@ class PokemonInfoDisplay : Fragment(R.layout.fragment_pokemon_info_display) {
         pokemonInfoType1View =view.findViewById(R.id.pokemonInfoType1)
         pokemonInfoType2View =view.findViewById(R.id.pokemonInfoType2)
 
-        if(this.arguments?.getString("pokemonURL") != null) {
-            val pokeName = (this.arguments?.getString("pokemonName"))
+        if(this.arguments?.getString("pokemonURL") != null) { // Executes code if bundle info was pulled from Database
+            var pokeName = (this.arguments?.getString("pokemonName"))
+            if (pokeName == "farfetchd") { //  for the abnormal cases
+                pokeName = "farfetch'd"
+            }
+            if (pokeName == "mr-mime") {// for the abnormal cases
+                pokeName = "mr. Mime"
+            }
+
             val pokeType1 = (this.arguments?.getString("pokemonType1"))
             val pokeType2 = (this.arguments?.getString("pokemonType2"))
-
             val spriteURL = (this.arguments?.getString("pokemonURL"))
 
             CoroutineScope(Dispatchers.Main).launch {
                 val sprite: Bitmap? = imageDownloaderTask(spriteURL)
-                pokemonInfoNameView.text = (pokeName)
+                pokemonInfoNameView.text = (cap(pokeName))
 
                 pokemonInfoImageView.setImageBitmap(sprite)
                 pokemonInfoType1View.text = pokeType1
@@ -72,7 +78,7 @@ class PokemonInfoDisplay : Fragment(R.layout.fragment_pokemon_info_display) {
 
             }
         }
-        else{
+        else{ // Default code if the user input was not found in Database
 
            var entry= this.arguments?.getString("pokemonName") // Retrieves the bundle pair passed from the other fragment
 
@@ -89,13 +95,13 @@ class PokemonInfoDisplay : Fragment(R.layout.fragment_pokemon_info_display) {
                 pokemonInfoType1View.text = getPokemonType1(webpage)
                 pokemonInfoType2View.text = getPokemonType2(webpage)
                 if (pokemonInfoType2View.text == null) {
+                    pokemonInfoType1View.x= 20F
                     pokemonInfoType2View.setBackgroundColor(Color.WHITE)
                 }
 
 
                 //animate on image entry
                 pokemonInfoImageView.animate().scaleXBy(.8F).scaleYBy(.8F).duration = 300
-
 
                 if (entry == "farfetchd") { //  for the abnormal cases
                     entry = "farfetch'd"

@@ -12,9 +12,7 @@ class ReworkedPokemonItem(var pokemonName: String?, var pokemonType1: String?, v
         CoroutineScope(Dispatchers.Main).launch {
             pokemonSprite = imageDownloaderTask(spriteURL)
         }
-//        fun toString(): String {
-//            return "$pokemonName : $pokemonType1 and $pokemonType2 "
-//        }
+
 
     }
 

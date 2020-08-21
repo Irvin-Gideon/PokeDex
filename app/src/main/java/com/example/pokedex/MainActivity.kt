@@ -32,28 +32,29 @@ class MainActivity : AppCompatActivity() {
 
          dataBaseHelper= DataBaseHelper(this)
         CoroutineScope(Dispatchers.Main).launch {
-            if(!dataBaseHelper.tableExists()) {
-                dataBaseHelper.addList(pokeTestListSize)
-                SPLASH_TIME=9000
-            }else{SPLASH_TIME=3000}
+            if (!dataBaseHelper.tableExists()) {
+                dataBaseHelper.addAll()
+                SPLASH_TIME = 10000
+                Log.i("info", "don't exist")
+            } else {
+                SPLASH_TIME = 3000
+            }
             val everyone: ArrayList<ReworkedPokemonItem> = dataBaseHelper.getEveryOne()
             pokeTestList.addAll(everyone)
+
+
+
+
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
+
+            window.setBackgroundDrawable(null)
+            initializeView()
+            animateLogo()
+            goToMainActivity()
+
+
         }
-
-
-
-        //TODO Cleanup old
-        //popListVisible(pokeTestList) // Cheaty way to make sure the user diesnt load into a blank screen
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-
-
-        window.setBackgroundDrawable(null)
-        initializeView()
-        animateLogo()
-        goToMainActivity()
-
-
-
     }
 
     private fun initializeView()
@@ -63,9 +64,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun animateLogo(){
-//        val fadingInAnimation: Animation = AnimationUtils.loadAnimation(this,R.anim.fade_in)
-//        fadingInAnimation.duration = SPLASH_TIME.toLong()
-//        imageView?.startAnimation(fadingInAnimation)
+
         imageView?.alpha=0F
         imageView?.animate()?.rotationBy(1440F)?.duration=SPLASH_TIME/4L
         imageView?.animate()?.alpha(1F)?.duration=SPLASH_TIME.toLong()
@@ -76,9 +75,6 @@ class MainActivity : AppCompatActivity() {
         Handler().postDelayed({ //Do any action here. Now we are moving to next page
             val mySuperIntent = Intent(this, ActivityHome::class.java)
             startActivity(mySuperIntent)
-            //TODO cleanup old
-            //popListRest(pokeTestList, pokeTestList.size+1,pokeTestList.size+21)
-            //popListRest(pokeTestList, pokeTestList.size+1,pokeTestList.size+21)
 
 
             //This 'finish()' is for exiting the app when back button pressed from Home page which is ActivityHome
@@ -89,21 +85,6 @@ class MainActivity : AppCompatActivity() {
 }
 
 
-
-/**Pre: list must be an empty arrayList holding PokemonItem in all lowerCase
- * Post:  Adds the first n amount of pokemon
- */
-fun popListVisible(list: ArrayList<PokemonItem>){
-    for (n in 1..7) {  //Initializes the Lists with the information of first 7 pokemon
-        list.add(PokemonItem(n))
-    }
-}
-fun popListRest(list: ArrayList<PokemonItem>, start: Int,end: Int){
-    for (n in start..end)
-    {  //Initializes the list with the information of each pokemon
-        list.add(PokemonItem(n))
-    }
-}
 
 /**Pre: oldString must be a string in all lowerCase
  * Post:  Returns newstring with the first letter capitalized

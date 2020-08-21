@@ -58,9 +58,11 @@ class searchFragment : Fragment() {
                     editSearchBar.hint = "Input valid Pokémon Name."
                 } else {
                     var entry = editSearchBar.text.toString().toLowerCase()
+                    entry = entry.replace("\\s".toRegex(), "-") // Replaces whitepace with dashes (needed for API call)
 
 
-                    if (dataBaseHelper.tableExists()) {
+
+                    if (dataBaseHelper.tableExists()) { // Executes code if pokemon was able to be pulled from Database
                         val pokemonDB = dataBaseHelper.searchDB(entry)
                         val bundle: Bundle = bundleOf(
                             "pokemonName" to pokemonDB?.pokemonName,
